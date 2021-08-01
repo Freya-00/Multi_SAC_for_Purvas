@@ -41,4 +41,5 @@ if __name__ == "__main__":
     # print(a)
     # print(b)
     # print(c)
+    # test 
     print(_get_state_purs(a,b))
