@@ -6,7 +6,7 @@ from environment.pureva2D_decentral import PurEva_2D_Game
 import matplotlib.pyplot as plt
 
 if __name__ == "__main__":
-    EPOSIDES = 4000
+    EPOSIDES = 8000
     env = PurEva_2D_Game()
     for eposide in range(EPOSIDES):
         if eposide >= 300 :
@@ -27,9 +27,9 @@ if __name__ == "__main__":
             # plt.show()
         print("epsidoe",eposide,"reward",reward)
         'plot'
-        if eposide % 100  == 0 and eposide !=0:
-            env.plot()
-            plt.show()
+        # if eposide % 100  == 0 and eposide !=0:
+        #     env.plot()
+        #     plt.show()
         
         
         'test'
@@ -47,9 +47,9 @@ if __name__ == "__main__":
                         break
                 for i in range(3):
                     aver_reward[i] += reward_test[i]
-                if eposide > 200:
-                    env.plot(show_map = True, show_dis = False, show_reward = False, show_win_rate = False)
-                    plt.show()
+                # if eposide > 200:
+                #     env.plot(show_map = True, show_dis = False, show_reward = False, show_win_rate = False)
+                #     plt.show()
             for i in range(3):
                 aver_reward[i] = aver_reward[i]/test_eopside/env.max_step
             
