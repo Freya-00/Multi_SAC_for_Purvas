@@ -4,28 +4,34 @@ sys.path.append("../code")
 import torch
 import torch.nn.functional as F
 from torch.optim import Adam
-from rl.sac_aversion.utils import soft_update, hard_update
-from rl.sac_aversion.model import GaussianPolicy, QNetwork, DeterministicPolicy
-import copy
+from rl.sac_adjust_alpha.utils import soft_update, hard_update
+from rl.sac_adjust_alpha.model import GaussianPolicy, QNetwork, DeterministicPolicy
+
 use_cuda = torch.cuda.is_available()
 
 class SAC(object):
-    def __init__(self, num_inputs, action_dim, args, share_action = False):
+    def __init__(self, 
+                num_inputs, 
+                action_dim,
+                hidden_size = 256,
+                learning_rate = 0.0003,
+                policy_type = "Gaussian",
+                share_action = False):
 
-        self.gamma = args.gamma
-        self.tau = args.tau
-        self.alpha = args.alpha
-        self.share_action = share_action
-        self.share_ac_num = 3
-        self.policy_type = args.policy
-        self.automatic_entropy_tuning = args.automatic_entropy_tuning
+        self.gamma = 0.98 # discount factor for reward
+        self.tau = 0.005 # target smoothing coefficient(τ)
+        self.alpha = 0.1 # Temperature parameter α determines the relative importance of the entropy term against the reward
+        self.share_action = share_action # Share actions between agents
+        self.share_ac_num = 3 # the num of shared actions
+        self.policy_type = policy_type # Policy Type: Gaussian | Deterministic
+        self.automatic_entropy_tuning = True # Automaically adjust α
 
         self.device = torch.device("cuda" if use_cuda else "cpu")
 
-        self.critic = QNetwork(num_inputs, action_dim, args.hidden_size).to(device=self.device)
-        self.critic_optim = Adam(self.critic.parameters(), lr=args.lr)
+        self.critic = QNetwork(num_inputs, action_dim, hidden_size).to(device=self.device)
+        self.critic_optim = Adam(self.critic.parameters(), lr=learning_rate)
 
-        self.critic_target = QNetwork(num_inputs, action_dim, args.hidden_size).to(self.device)
+        self.critic_target = QNetwork(num_inputs, action_dim, hidden_size).to(self.device)
         hard_update(self.critic_target, self.critic)
 
         if self.policy_type == "Gaussian":
@@ -33,22 +39,22 @@ class SAC(object):
             if self.automatic_entropy_tuning is True:
                 self.target_entropy = -torch.prod(torch.Tensor(action_dim).to(self.device)).item()
                 self.log_alpha = torch.zeros(1, requires_grad=True, device=self.device)
-                self.alpha_optim = Adam([self.log_alpha], lr=args.lr)
+                self.alpha_optim = Adam([self.log_alpha], lr=learning_rate)
             
             if self.share_action is True:
-                self.policy = GaussianPolicy(num_inputs - self.share_ac_num, action_dim, args.hidden_size).to(self.device)
+                self.policy = GaussianPolicy(num_inputs - self.share_ac_num, action_dim, hidden_size).to(self.device)
             else:
-                self.policy = GaussianPolicy(num_inputs, action_dim, args.hidden_size).to(self.device)
-            self.policy_optim = Adam(self.policy.parameters(), lr=args.lr)
+                self.policy = GaussianPolicy(num_inputs, action_dim, hidden_size).to(self.device)
+            self.policy_optim = Adam(self.policy.parameters(), lr=learning_rate)
 
         else:
             self.alpha = 0
             self.automatic_entropy_tuning = False
             if self.share_action is True:
-                self.policy = DeterministicPolicy(num_inputs - self.share_ac_num, action_dim, args.hidden_size).to(self.device)
+                self.policy = DeterministicPolicy(num_inputs - self.share_ac_num, action_dim, hidden_size).to(self.device)
             else:
-                self.policy = DeterministicPolicy(num_inputs, action_dim, args.hidden_size).to(self.device)
-            self.policy_optim = Adam(self.policy.parameters(), lr=args.lr)
+                self.policy = DeterministicPolicy(num_inputs, action_dim, hidden_size).to(self.device)
+            self.policy_optim = Adam(self.policy.parameters(), lr=learning_rate)
 
     def select_action(self, state, evaluate=False):
         state = torch.FloatTensor(state).to(self.device).unsqueeze(0)

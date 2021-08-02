@@ -2,7 +2,7 @@ import sys
 
 sys.path.append("../code")
 
-from environment.pureva2D_decentral import PurEva_2D_Game
+from environment.pureva_2D import PurEva_2D_Game
 import matplotlib.pyplot as plt
 
 if __name__ == "__main__":
