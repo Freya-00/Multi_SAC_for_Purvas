@@ -6,6 +6,8 @@ from environment.pureva_2D import PurEva_2D_Game
 import matplotlib.pyplot as plt
 
 if __name__ == "__main__":
+    
+    'initial'
     EPOSIDES = 8000
     env = PurEva_2D_Game()
     for eposide in range(EPOSIDES):

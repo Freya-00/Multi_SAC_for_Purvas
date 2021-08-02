@@ -12,13 +12,11 @@ import sys
 
 sys.path.append("../code")
 
-
 import math
 
 import matplotlib.pyplot as plt
 import numpy as np
 from random import random
-# from agent.sac_2d_agent_decentral import PurEva_2D_Agent
 from agent.sac_2d_agent_alpha import PurEva_2D_Agent
 from environment.map import PurEvaMap
 from environment.reward import PurEva_2D_Reward
@@ -89,7 +87,8 @@ class PurEva_2D_Game(object):
             self.evasion.append(
                 PurEva_2D_Agent('eva%d'%j, self.state_dim_evas, self.action_dim,
                                 initial_pos_eva[0], initial_pos_eva[1],
-                                self.vel_eva, creat_network=True))
+                                self.vel_eva, policy_deterministic= True,
+                                creat_network=True, ))
             self.reward__record_evas.append([])
             self.reward_one_eposide_eva.append(0)
 
@@ -159,8 +158,6 @@ class PurEva_2D_Game(object):
             self.pursuit[i].dynamic_model.initial_y = pos_y
             self.pursuit[i].dynamic_model.reset_theta(initial_pos_eva)
         
-
-
     def _get_actions(self, state, eval = False):
         action_pur = []
         action_eva = []

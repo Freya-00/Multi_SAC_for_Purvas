@@ -129,7 +129,6 @@ class PurEva_2D_Reward(object):
         return done, r_all
         
 
-
     def _eva_reward(self,position_all):
         pos_pur = position_all[0:3]
         pos_eva = position_all[-1]
