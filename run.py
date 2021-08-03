@@ -58,7 +58,7 @@ def learn_test(eposide):
 
 def final_test():
     final_test_win = 0
-    for _ in range(3):
+    for _ in range(50):
         env.set_random_position()
         env.initial_env()
         for j in range(env.max_step):
@@ -71,7 +71,7 @@ def final_test():
 
 if __name__ == "__main__":
     num_pw = [0]
-    EPOSIDES = 10
+    EPOSIDES = 10000
     env = PurEva_2D_Game()
     learn()
     final_test()
