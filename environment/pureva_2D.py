@@ -123,7 +123,7 @@ class PurEva_2D_Game(object):
         state_next_for_policy = self._get_state_policy()
         action_next_pur, action_next_eva = self._get_actions(state_next_for_policy)
         state_next_share_action = self._get_state_purs(state_next_for_policy, action_next_pur, action_next_eva)
-        done, reward_pur, reward_eva = self._get_reward_and_done(t)
+        done, reward_pur, reward_eva, results = self._get_reward_and_done(t)
         
         'record'
         for i in range(self.num_pur):
@@ -141,7 +141,7 @@ class PurEva_2D_Game(object):
             for j in range(self.num_eva):
                 self.reward__record_evas[j].append(self.reward_one_eposide_eva[j])
         
-        return reward_pur, done
+        return reward_pur, done, results
 
     def set_random_position(self):
         for j in range(self.num_eva):
@@ -206,8 +206,8 @@ class PurEva_2D_Game(object):
         for pur in self.pursuit:
             position_all.append(pur.dynamic_model.get_pos())
         position_all.append(self.evasion[-1].dynamic_model.get_pos())
-        done, reward_pur, reward_eva = self.module_reward.return_reward(position_all,t)
-        return done, reward_pur, reward_eva
+        done, reward_pur, reward_eva, results = self.module_reward.return_reward(position_all,t)
+        return done, reward_pur, reward_eva, results
 
     def _update_policy_purs(self, state, ac, rp, next_state, done, t):
         for i in range(self.num_pur):

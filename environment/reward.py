@@ -41,9 +41,9 @@ class PurEva_2D_Reward(object):
     def return_reward(self,position_all, t):
         'position_all = [[P1],[P2],[P3],[E1]]'
         # done, reward = self._curriculum_reward(position_all)
-        done, reward_pur = self._commom_reward_share(position_all, t)
+        done, reward_pur, results = self._commom_reward_share(position_all, t)
         reward_eva = self._eva_reward(position_all)
-        return done, reward_pur, reward_eva
+        return done, reward_pur, reward_eva, results
         
     def _normal_reward(self,position,time):
         pos_pur = position[0:3]
@@ -98,6 +98,7 @@ class PurEva_2D_Reward(object):
         r_team_iso = []
         r_all = []
         done = False
+        game_results = None
         for i in range(3):
             dis_purs_eva.append(self._cal_distance(pos_pur[i],pos_eva))
         dis_purs_eva = np.array(dis_purs_eva)
@@ -110,7 +111,8 @@ class PurEva_2D_Reward(object):
                 self.win_rate.append(sum(self.game_winner)/len(self.game_winner))
             else:
                 self.win_rate.append(sum(self.game_winner[-500:])/len(self.game_winner[-500:]))
-            print('purs win',sum(self.game_winner))
+            game_results = ['purs win',sum(self.game_winner)]
+            # print('purs win',sum(self.game_winner))
         if time == MAX_STEP -1:
             done = True
             self.game_winner.append(0)
@@ -118,7 +120,8 @@ class PurEva_2D_Reward(object):
                 self.win_rate.append(sum(self.game_winner)/len(self.game_winner))
             else:
                 self.win_rate.append(sum(self.game_winner[-500:])/len(self.game_winner[-500:]))
-            print('eva win',len(self.game_winner) - sum(self.game_winner))
+            game_results = ['eva win',len(self.game_winner) - sum(self.game_winner)]
+            # print('eva win',len(self.game_winner) - sum(self.game_winner))
         r_team_all = - math.exp(dis_min/80) + 1
         
         for i in range(3):
@@ -126,7 +129,7 @@ class PurEva_2D_Reward(object):
             r_collision = self._punish_against_the_wall(position_all[i])
             r_all.append(r_team_iso + r_collision)
         
-        return done, r_all
+        return done, r_all, game_results
         
 
     def _eva_reward(self,position_all):
