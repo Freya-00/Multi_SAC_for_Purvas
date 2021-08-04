@@ -68,7 +68,7 @@ class PurEva_2D_Agent(object):
             # print('learn')
 
     def save_models(self):
-        self.net.save_model('multi_pur_eva','%s_%s'%(self.agent_label, time.time()))
+        self.net.save_model('multi_pur_eva','%s_%s'%(self.label, time.time()))
 
 if __name__ == "__main__":
     pass
