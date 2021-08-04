@@ -39,5 +39,5 @@ class PurEvaMap(object):
     def draw_map(self):
         pass
 
-
-
+if __name__ == "__main__":
+    pass
