@@ -24,7 +24,7 @@ def learn():
         print("epsidoe",eposide,"reward",reward, results[0], results[1])
         learn_test(eposide)
     plt.figure('test')
-    plt.plot(len(num_pw),num_pw)
+    plt.plot(range(len(num_pw)),num_pw)
     
 def learn_test(eposide):
     global num_pw
