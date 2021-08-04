@@ -74,6 +74,7 @@ if __name__ == "__main__":
     EPOSIDES = 10000
     env = PurEva_2D_Game()
     learn()
+    env.save_model_trained()
     final_test()
     env.plot()
     plt.show()

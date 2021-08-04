@@ -11,10 +11,8 @@
 import sys
 
 sys.path.append("../code")
-import math
 from random import random
-
-import numpy as np
+import time
 from rl.sac_adjust_alpha.replay_memory import ReplayMemory
 from rl.sac_adjust_alpha.sac import SAC
 from agent.dynamic_model.uavplane import UAVPLANE
@@ -69,6 +67,8 @@ class PurEva_2D_Agent(object):
             _, _, _, _, _, = self.net.update_parameters(self.memory)
             # print('learn')
 
+    def save_models(self):
+        self.net.save_model('multi_pur_eva','%s_%s'%(self.agent_label, time.time()))
 
 if __name__ == "__main__":
     pass

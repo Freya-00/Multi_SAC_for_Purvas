@@ -157,7 +157,15 @@ class PurEva_2D_Game(object):
             pos_y = random() * 100
             self.pursuit[i].dynamic_model.initial_y = pos_y
             self.pursuit[i].dynamic_model.reset_theta(initial_pos_eva)
-        
+    
+    def save_model_trained(self):
+        for pur in self.pursuit:
+            pur.save_models()
+        for eva in self.evasion:
+            eva.save_models()
+
+    def load_models_trained(self):
+        pass
     def _get_actions(self, state, eval = False):
         action_pur = []
         action_eva = []
@@ -234,16 +242,6 @@ class PurEva_2D_Game(object):
         if tem_y > self.map.width:
             agent.dynamic_model.y[-1] = self.map.width
 
-    def _cal_dis(self,a_pos,b_pos):
-        'input [x,y]'
-        return math.sqrt((a_pos[0]-b_pos[0])**2 +
-                        (a_pos[1]-b_pos[1])**2)
-
-    def _cal_andis(self,a_vel,b_vel):
-        'input: angel of agent'
-        andis = abs(a_vel - b_vel)
-        andis = andis % (math.pi/2)
-        return andis
 
     def plot(self, show_map = True, show_dis = False, show_reward = True, show_win_rate = True, save_fig = False):
         '''plot game'''
