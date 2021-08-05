@@ -31,7 +31,7 @@ class UAVPLANE(object):
         self.turning_angle = turning_angle
         self.theta = [initial_theta]
 
-    def move(self,theta_d1):
+    def move(self,theta_d1, cosllision = False):
         """
         Input: theta_d1 between +-pi/12
         """
@@ -42,8 +42,18 @@ class UAVPLANE(object):
             theta_next += pi*2
         
         self.theta.append(theta_next)
-        self.x.append(self.x[-1] + self.vel* cos(self.theta[-1])* TIME)
-        self.y.append(self.y[-1] + self.vel* sin(self.theta[-1])* TIME)
+        if cosllision == True:
+            self.x.append(self.x[-1])
+            self.y.append(self.y[-1])
+        else:
+            self.x.append(self.x[-1] + self.vel* cos(self.theta[-1])* TIME)
+            self.y.append(self.y[-1] + self.vel* sin(self.theta[-1])* TIME)
+
+    def get_next_pos(self, theta_d1):
+        theta_next = self.theta[-1] + theta_d1.tolist()[0]* pi/self.turning_angle *TIME
+        next_x = self.x[-1] + self.vel* cos(theta_next)* TIME
+        next_y = self.y[-1] + self.vel* sin(theta_next)* TIME
+        return [next_x, next_y]
 
     def reset_theta(self,taregt_pos):
         self.initial_theta = math.atan2(taregt_pos[1] - self.initial_y, taregt_pos[0] - self.initial_x)

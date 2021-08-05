@@ -112,12 +112,21 @@ class PurEva_2D_Game(object):
 
         'move'
         for i in range(self.num_pur):
-            self.pursuit[i].dynamic_model.move(action_pur[i])
-            self._border_limit(self.pursuit[i])
+            pos_tem = self.pursuit[i].dynamic_model.get_next_pos(action_pur[i])
+            if self.map.obstacle_collision_detection(pos_tem) == True:
+                self.pursuit[i].dynamic_model.move(action_pur[i], cosllision = True)
+            else:
+                self.pursuit[i].dynamic_model.move(action_pur[i])
+            # self._border_limit(self.pursuit[i])
 
         for j in range(self.num_eva):
-            self.evasion[j].dynamic_model.move(action_eva[j])
-            self._border_limit(self.evasion[j])
+            pos_tem = self.evasion[j].dynamic_model.get_next_pos(action_eva[j])
+            if self.map.obstacle_collision_detection(pos_tem) == True:
+                self.evasion[j].dynamic_model.move(action_eva[j], cosllision = True)
+            else:
+                self.evasion[j].dynamic_model.move(action_eva[j])
+            # self.evasion[j].dynamic_model.move(action_eva[j])
+            # self._border_limit(self.evasion[j])
 
         'get reward and next_state'
         state_next_for_policy = self._get_state_policy()
@@ -146,15 +155,21 @@ class PurEva_2D_Game(object):
     def set_random_position(self):
         for j in range(self.num_eva):
             pos_x = random() * 100
-            self.evasion[j].dynamic_model.initial_x = pos_x
             pos_y = random() * 100
+            while self.map.obstacle_collision_detection([pos_x, pos_y]):
+                pos_x = random() * 100
+                pos_y = random() * 100
+            self.evasion[j].dynamic_model.initial_x = pos_x
             self.evasion[j].dynamic_model.initial_y = pos_y
             initial_pos_eva = [pos_x,pos_y]
         
         for i in range(self.num_pur):
             pos_x = random() * 100
-            self.pursuit[i].dynamic_model.initial_x = pos_x
             pos_y = random() * 100
+            while self.map.obstacle_collision_detection([pos_x, pos_y]):
+                pos_x = random() * 100
+                pos_y = random() * 100
+            self.pursuit[i].dynamic_model.initial_x = pos_x
             self.pursuit[i].dynamic_model.initial_y = pos_y
             self.pursuit[i].dynamic_model.reset_theta(initial_pos_eva)
     
@@ -166,6 +181,7 @@ class PurEva_2D_Game(object):
 
     def load_models_trained(self):
         pass
+
     def _get_actions(self, state, eval = False):
         action_pur = []
         action_eva = []
@@ -254,6 +270,7 @@ class PurEva_2D_Game(object):
         
         if show_map:
             plt.figure('map')
+            self.map.polt_obstacle()
             circle_theta = np.linspace(0, 2 * np.pi, 200)
             color = ['b','g','r']
             for i in range(self.num_pur):

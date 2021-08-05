@@ -17,6 +17,12 @@ from numpy.lib.function_base import copy
 
 CAPTURE_DISTANCE = 3 # Captured distance
 MAX_STEP = 150
+POS_OBSTACLE = [[44.621661834984764, 50.097341701901996],
+                            [88.24634997830569, 54.85838645020871], 
+                            [57.846220599484006, 86.91246782161434], 
+                            [79.9000779874308, 79.83216755322371]]
+RADIUS_OBSTACLE = [15,8,8,8]
+
 
 class PurEva_2D_Reward(object):
     def __init__(self,
@@ -313,15 +319,14 @@ class PurEva_2D_Reward(object):
         return reward
 
     def _punish_against_the_wall(self,pos):
-        dis_wall = [pos[0],
-                    self.map_width - pos[1],
-                    self.map_length - pos[0],
-                    pos[0]]
-        min_wall = min(dis_wall)
-        if min_wall < 1.5:
-            return -10
-        else:
-            return 0
+        r = 0
+        for i in range(4):
+            if self._cal_distance(POS_OBSTACLE[i], pos) <= RADIUS_OBSTACLE[i]:
+                r = -10
+        if pos[0] >= self.map_length or pos[0] <=0 or pos[1] <= 0 or pos[1] >= self.map_width:
+            r = -10
+        
+        return r
 
     def _cal_triangle_area(self,a,b,c):
         p = (a+b+c)/2

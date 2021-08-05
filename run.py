@@ -8,9 +8,7 @@ import matplotlib.pyplot as plt
 def learn():
     global num_pw
     for eposide in range(EPOSIDES):
-        if eposide >= 300 :
-            'random position'
-            env.set_random_position()
+        env.set_random_position()
         env.initial_env()
         reward = [0, 0, 0]
         for j in range(env.max_step):
@@ -23,6 +21,8 @@ def learn():
                 break
         print("epsidoe",eposide,"reward",reward, results[0], results[1])
         learn_test(eposide)
+        # env.plot(show_map = True, show_dis = False, show_reward = False, show_win_rate = False, save_fig = False)
+        # plt.show()
     plt.figure('test')
     plt.plot(range(len(num_pw)),num_pw)
     
