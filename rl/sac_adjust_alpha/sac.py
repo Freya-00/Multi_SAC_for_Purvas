@@ -24,7 +24,7 @@ class SAC(object):
         self.share_action = share_action # Share actions between agents
         self.share_ac_num = 3 # the num of shared actions
         self.policy_type = policy_type # Policy Type: Gaussian | Deterministic
-        self.automatic_entropy_tuning = True # Automaically adjust α
+        self.automatic_entropy_tuning = False # Automaically adjust α
 
         self.device = torch.device("cuda" if use_cuda else "cpu")
 

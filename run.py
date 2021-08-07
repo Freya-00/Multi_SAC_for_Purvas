@@ -17,7 +17,7 @@ def learn():
                 reward[i] += re[i]
             if done == True:
                 for i in range(3):
-                    reward[i] = reward[i]/j
+                    reward[i] = reward[i]/(j+1)
                 break
         print("epsidoe",eposide,"reward",reward, results[0], results[1])
         learn_test(eposide)
@@ -62,7 +62,7 @@ def final_test():
         env.set_random_position()
         env.initial_env()
         for j in range(env.max_step):
-            _, done, results = env.act_and_learn(j)
+            _, done, results = env.act_and_learn(j, eval_f = True)
             if done == True:
                 if results[0] == 'purs win':
                     final_test_win += 1
@@ -71,7 +71,7 @@ def final_test():
 
 if __name__ == "__main__":
     num_pw = [0]
-    EPOSIDES = 10000
+    EPOSIDES = 8000
     env = PurEva_2D_Game()
     learn()
     env.save_model_trained()
