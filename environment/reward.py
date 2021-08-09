@@ -100,7 +100,7 @@ class PurEva_2D_Reward(object):
     def _punish_against_the_wall(self, pos):
         r = 0
         for i in range(len(POS_OBSTACLE)):
-            if self._cal_distance(POS_OBSTACLE[i], pos) <= RADIUS_OBSTACLE[i]:
+            if self._cal_distance(POS_OBSTACLE[i], pos) <= (RADIUS_OBSTACLE[i] + MARGIN):
                 r = -10
         if pos[0] >= (self.map_length-MARGIN) or pos[0] <= MARGIN or pos[1] <= MARGIN or pos[1] >= (self.map_width-MARGIN):
             r = -10
