@@ -24,11 +24,11 @@ class PurEvaMap(object):
     def __init__(self,length,width):
         self.length = length
         self.width = width
-        self.pos_obstacle = [[44.621661834984764, 50.097341701901996],
-                            [88.24634997830569, 54.85838645020871], 
-                            [57.846220599484006, 86.91246782161434], 
-                            [79.9000779874308, 79.83216755322371]]
-        self.radius_obstacle = [15,8,8,8]
+        self.pos_obstacle = [[length/4, width/4],
+                            [3*length/4, width/4], 
+                            [length/4, 3*width/4], 
+                            [3*length/4, 3*width/4]]
+        self.radius_obstacle = [15,15,15,15]
 
     def collection_detection(self,x,y):
         if x < 0 or x > self.length:
@@ -65,6 +65,8 @@ class PurEvaMap(object):
             circle_y = self.radius_obstacle[i+1]*np.sin(circle_theta) + self.pos_obstacle[i+1][1]
             plt.plot(circle_x,circle_y,color="darkred", linewidth=2)
         # plt.show()
+        # plt.xlim(0,100)
+        # plt.ylim(0,100)
     
     def draw_map(self):
         pass
@@ -84,3 +86,4 @@ class PurEvaMap(object):
 if __name__ == "__main__":
     map = PurEvaMap(100,100)
     map.polt_obstacle()
+    plt.show()

@@ -9,7 +9,7 @@
 # Last Modified time: 2021-07-05 17:06:19 星期一
 
 
-from math import pi, sin, cos,tan
+from math import pi, sin, cos
 import math 
 
 TIME = float(0.5)
@@ -31,7 +31,7 @@ class UAVPLANE(object):
         self.turning_angle = turning_angle
         self.theta = [initial_theta]
 
-    def move(self,theta_d1, cosllision = False):
+    def move(self, theta_d1, cosllision = False):
         """
         Input: theta_d1 between +-pi/12
         """
@@ -62,15 +62,11 @@ class UAVPLANE(object):
         self.x = [self.initial_x]
         self.y = [self.initial_y]
         self.theta = [self.initial_theta]
-      
-    def default_policy(self):
-        return 0
     
     def get_pos(self):
         return [self.x[-1], self.y[-1]]
     
 
 if __name__ == "__main__":
-    print(sin(1.57))
-    print(pi)
+    pass
 

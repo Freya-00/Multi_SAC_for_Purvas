@@ -12,8 +12,6 @@ import sys
 
 sys.path.append("../code")
 
-import math
-
 import matplotlib.pyplot as plt
 import numpy as np
 from random import random
@@ -47,6 +45,7 @@ class PurEva_2D_Game(object):
     action: the difference of v and dim is 1
     """
     def __init__(self,
+                test = False,
                 num_pur = 3,
                 num_eva = 1,
                 map_length = 100,
@@ -102,7 +101,7 @@ class PurEva_2D_Game(object):
         self.reward_one_eposide_purs = [0,0,0]
         self.reward_one_eposide_eva = [0]
 
-    def act_and_learn(self, t, eval_f = False):
+    def act_and_learn(self, t, eval_f = False, learn = True):
         'core function for act with env and learn'
         
         'get action and state'
@@ -141,8 +140,9 @@ class PurEva_2D_Game(object):
             self.reward_one_eposide_eva[j] += reward_eva[j]
         
         'learn'
-        self._update_policy_purs(state_share_action, action_pur, reward_pur, state_next_share_action, done, t)
-        self._update_policy_evas(state_for_policy, action_eva, reward_eva, state_next_for_policy, done, t)
+        if learn == True:
+            self._update_policy_purs(state_share_action, action_pur, reward_pur, state_next_share_action, done, t)
+            self._update_policy_evas(state_for_policy, action_eva, reward_eva, state_next_for_policy, done, t)
         
         if done == True:
             for i in range(self.num_pur):
@@ -245,19 +245,6 @@ class PurEva_2D_Game(object):
             if t %2 == 0:
                 self.evasion[j].update_policy()
                 # print('eva learned')
-
-    def _border_limit(self,agent):
-        tem_x = agent.dynamic_model.x[-1]
-        tem_y = agent.dynamic_model.y[-1]
-        if tem_x < 0:
-            agent.dynamic_model.x[-1] = 0
-        if tem_x > self.map.length:
-            agent.dynamic_model.x[-1] = self.map.length
-        if tem_y < 0:
-            agent.dynamic_model.y[-1] = 0
-        if tem_y > self.map.width:
-            agent.dynamic_model.y[-1] = self.map.width
-
 
     def plot(self, show_map = True, show_dis = False, show_reward = True, show_win_rate = True, save_fig = False):
         '''plot game'''

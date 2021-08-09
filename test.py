@@ -1,45 +1,38 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-import math
-from random import randint, random
-import numpy as np
-from numpy.testing._private.utils import print_assert_equal
-class A(object):
-    def __init__(self):
-        self.a = 1
+#!/usr/bin/env python
+# -*- coding:UTF-8 -*-
+# Author: Jiebang
+# Filename: test.py
+# Creat Time: 2021-08-09 16:43:58 星期一
+# Version: 1.0
 
-    def test1(self):
-        def test2():
-            print('test2')
-        print('test1')
-        test2()
+# Description: test models
 
-def _get_state_purs(state_polocy, action_purs):
-    'both agents have same state space'
-    state_purs = []
-    for i in range(3):
-        state_purs.append([state_polocy])
-        for j in range(3):
-            if j != i:
-                state_purs[i] = np.append(state_purs[i], action_purs[j])
-    return state_purs
+import sys
+
+sys.path.append("../code")
+
+from environment.pureva_2D import PurEva_2D_Game
+import matplotlib.pyplot as plt
+
+
 
 if __name__ == "__main__":
-    color = ['blue','green','red']
-    # a = np.array([0.0])
-    # b = np.array([1.0])
-    # c = np.append(a,b).tolist()[0]
-    # print(c)
-    # print(type(c))
-    # a = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
-    # print(a[:-3])
-    # a = A()
-    # a.test1()
-    a = np.array([1,2,3,4,5,6,7,8,9])
-    b = np.array([4,5,6])
-    # a = np.append(a,b)
-    # print(a)
-    # print(b)
-    # print(c)
-    # test 
-    print(_get_state_purs(a,b))
+    num_pw = [0]
+    EPOSIDES = 8000
+    env = PurEva_2D_Game() # need load models
+    final_test_win = 0
+    for _ in range(50):
+        env.set_random_position()
+        env.initial_env()
+        for j in range(env.max_step):
+            _, done, results = env.act_and_learn(j, eval_f = True)
+            if done == True:
+                if results[0] == 'purs win':
+                    final_test_win += 1
+                break
+    print(final_test_win)
+
+
+
