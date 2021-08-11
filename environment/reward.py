@@ -108,10 +108,11 @@ class PurEva_2D_Reward(object):
 
     def _winrate_update(self, result):
         self.game_winner.append(result)
-        if len(self.game_winner) < 500:
-            self.win_rate.append(sum(self.game_winner)/len(self.game_winner))
-        else:
-            self.win_rate.append(sum(self.game_winner[-500:])/len(self.game_winner[-500:]))
+        if len(self.game_winner) >= 10:
+            if len(self.game_winner) < 500 :
+                self.win_rate.append(sum(self.game_winner)/len(self.game_winner))
+            else:
+                self.win_rate.append(sum(self.game_winner[-500:])/len(self.game_winner[-500:]))
 
     def _cal_distance(self,a_pos,b_pos):
         'input [x,y]'

@@ -50,7 +50,7 @@ class PurEva_2D_Agent(object):
             self.memory = ReplayMemory(REPLAY_BUFFER_SIZE, SEED)
         
         if self.load_existing_model == True:
-            self.net.load_model()
+            self.load_models()
 
     def get_action(self, state, evalue = False):
         if self.network_exist == False:
@@ -70,5 +70,8 @@ class PurEva_2D_Agent(object):
     def save_models(self):
         self.net.save_model('multi_pur_eva','%s_%s'%(self.label, time.time()))
 
+    def load_models(self):
+        self.net.load_model('rl/save_model/sac_actor_multi_pur_eva_%s'%self.label,
+                        'rl/save_model/sac_critic_multi_pur_eva_%s'%self.label)
 if __name__ == "__main__":
     pass

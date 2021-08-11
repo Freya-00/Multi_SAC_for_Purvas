@@ -76,10 +76,11 @@ class PurEva_2D_Game(object):
             self.pursuit.append(
                 PurEva_2D_Agent('pur%d'%i, self.state_dim_purs, self.action_dim,
                                 initial_pos_purs[i][0], initial_pos_purs[i][1],
-                                self.vel_pur, share_action=True))
+                                self.vel_pur, share_action=True, load_existing_model= test))
             self.pursuit[i].dynamic_model.reset_theta(initial_pos_eva)
             self.reward_record_purs.append([])
             self.reward_one_eposide_purs.append(0)
+
         
         self.evasion = [] # agent of evasion gamers
         for j in range(num_eva):
@@ -87,7 +88,7 @@ class PurEva_2D_Game(object):
                 PurEva_2D_Agent('eva%d'%j, self.state_dim_evas, self.action_dim,
                                 initial_pos_eva[0], initial_pos_eva[1],
                                 self.vel_eva, policy_deterministic= True,
-                                creat_network=True, ))
+                                creat_network=True, load_existing_model= test ))
             self.reward__record_evas.append([])
             self.reward_one_eposide_eva.append(0)
 

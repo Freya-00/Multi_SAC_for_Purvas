@@ -21,17 +21,19 @@ import matplotlib.pyplot as plt
 if __name__ == "__main__":
     num_pw = [0]
     EPOSIDES = 8000
-    env = PurEva_2D_Game() # need load models
+    env = PurEva_2D_Game(test= True) # need load models
     final_test_win = 0
     for _ in range(50):
         env.set_random_position()
         env.initial_env()
         for j in range(env.max_step):
-            _, done, results = env.act_and_learn(j, eval_f = True)
+            _, done, results = env.act_and_learn(j, eval_f = True, learn= False)
             if done == True:
                 if results[0] == 'purs win':
                     final_test_win += 1
                 break
+        env.plot(show_map = True, show_dis = False, show_reward = False, show_win_rate = False, save_fig = False)
+        plt.show()
     print(final_test_win)
 
 
