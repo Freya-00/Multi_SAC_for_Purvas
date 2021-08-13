@@ -71,7 +71,7 @@ def final_test():
 
 if __name__ == "__main__":
     num_pw = [0]
-    EPOSIDES = 8000
+    EPOSIDES = 20000
     env = PurEva_2D_Game()
     learn()
     env.save_model_trained()

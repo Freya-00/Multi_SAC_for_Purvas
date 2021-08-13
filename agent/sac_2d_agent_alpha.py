@@ -63,7 +63,7 @@ class PurEva_2D_Agent(object):
                 return self.net.select_action(state)  # Sample action from policy
     
     def update_policy(self):
-        if len(self.memory) > 256:
+        if len(self.memory) > 1024:
             _, _, _, _, _, = self.net.update_parameters(self.memory)
             # print('learn')
 
