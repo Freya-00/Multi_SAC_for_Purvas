@@ -38,22 +38,22 @@ class PurEvaMap(object):
         else:
             return False
     
-    def generate_obstacle(self):
-        """
-        bulid obstacle of map
-        """
-        def _cal_distance(a_pos,b_pos):
-            return math.sqrt((a_pos[0]-b_pos[0])**2 + (a_pos[1]-b_pos[1])**2)
+    # def generate_obstacle(self):
+    #     """
+    #     bulid obstacle of map
+    #     """
+    #     def _cal_distance(a_pos,b_pos):
+    #         return math.sqrt((a_pos[0]-b_pos[0])**2 + (a_pos[1]-b_pos[1])**2)
         
-        center_a = [random.random()*40+30,random.random()*40+30]
-        center_b = []
-        for i in range(3):
-            center_b_tem = [random.random()*80+10,random.random()*80+10]
-            while _cal_distance(center_b_tem,center_a) <= 25:
-                center_b_tem = [random.random()*80+10,random.random()*80+10]
-            center_b.append(center_b_tem)
+    #     center_a = [random.random()*40+30,random.random()*40+30]
+    #     center_b = []
+    #     for i in range(3):
+    #         center_b_tem = [random.random()*80+10,random.random()*80+10]
+    #         while _cal_distance(center_b_tem,center_a) <= 25:
+    #             center_b_tem = [random.random()*80+10,random.random()*80+10]
+    #         center_b.append(center_b_tem)
         
-        return center_a, center_b
+    #     return center_a, center_b
 
     def polt_obstacle(self):
         circle_theta = np.linspace(0, 2 * np.pi, 200)
