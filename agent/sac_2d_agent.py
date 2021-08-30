@@ -16,7 +16,7 @@ import math
 from random import random
 
 import numpy as np
-import rl.sac
+import rl.sac_fixed_alpha_share_action
 
 from agent.dynamic_model.uavplane import UAVPLANE
 
