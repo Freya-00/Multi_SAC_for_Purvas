@@ -24,10 +24,14 @@ class PurEvaMap(object):
     def __init__(self,length,width):
         self.length = length
         self.width = width
-        self.pos_obstacle = [[length/4, width/4],
-                            [3*length/4, width/4], 
-                            [length/4, 3*width/4], 
-                            [3*length/4, 3*width/4]]
+        
+        self.pos_obstacle = [[length/5, width/5],
+                            [length/5, width/5], 
+                            [length/5, width/5], 
+                            [length/5, width/5],
+                            [length/5, width/5],
+                            [length/5, width/5],
+                            [length/5, width/5]]
         self.radius_obstacle = [15,15,15,15]
 
     def collection_detection(self,x,y):
