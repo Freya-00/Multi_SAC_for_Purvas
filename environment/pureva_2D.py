@@ -88,7 +88,7 @@ class PurEva_2D_Game(object):
                 PurEva_2D_Agent('eva%d'%j, self.state_dim_evas, self.action_dim,
                                 initial_pos_eva[0], initial_pos_eva[1],
                                 self.vel_eva, policy_deterministic= True,
-                                creat_network=True, load_existing_model= test ))
+                                creat_network=True, load_existing_model= test))
             self.reward__record_evas.append([])
             self.reward_one_eposide_eva.append(0)
 
@@ -113,18 +113,18 @@ class PurEva_2D_Game(object):
         'move'
         for i in range(self.num_pur):
             pos_tem = self.pursuit[i].dynamic_model.get_next_pos(action_pur[i])
-            if self.map.obstacle_collision_detection(pos_tem) == True:
+            if self.map.collection_detection(pos_tem) == True:
                 self.pursuit[i].dynamic_model.move(action_pur[i], cosllision = True)
             else:
                 self.pursuit[i].dynamic_model.move(action_pur[i])
             # self._border_limit(self.pursuit[i])
 
-        for j in range(self.num_eva):
-            pos_tem = self.evasion[j].dynamic_model.get_next_pos(action_eva[j])
-            if self.map.obstacle_collision_detection(pos_tem) == True:
-                self.evasion[j].dynamic_model.move(action_eva[j], cosllision = True)
-            else:
-                self.evasion[j].dynamic_model.move(action_eva[j])
+        # for j in range(self.num_eva):
+        #     pos_tem = self.evasion[j].dynamic_model.get_next_pos(action_eva[j])
+        #     if self.map.collection_detection(pos_tem) == True:
+        #         self.evasion[j].dynamic_model.move(action_eva[j], cosllision = True)
+        #     else:
+        #         self.evasion[j].dynamic_model.move(action_eva[j])
             # self.evasion[j].dynamic_model.move(action_eva[j])
             # self._border_limit(self.evasion[j])
 
@@ -143,7 +143,7 @@ class PurEva_2D_Game(object):
         'learn'
         if learn == True:
             self._update_policy_purs(state_share_action, action_pur, reward_pur, state_next_share_action, done, t)
-            self._update_policy_evas(state_for_policy, action_eva, reward_eva, state_next_for_policy, done, t)
+            # self._update_policy_evas(state_for_policy, action_eva, reward_eva, state_next_for_policy, done, t)
         
         if done == True:
             for i in range(self.num_pur):
@@ -165,13 +165,13 @@ class PurEva_2D_Game(object):
             initial_pos_eva = [pos_x,pos_y]
         
         for i in range(self.num_pur):
-            pos_x = random() * 100
-            pos_y = random() * 100
-            while self.map.obstacle_collision_detection([pos_x, pos_y]):
-                pos_x = random() * 100
-                pos_y = random() * 100
-            self.pursuit[i].dynamic_model.initial_x = pos_x
-            self.pursuit[i].dynamic_model.initial_y = pos_y
+            # pos_x = random() * 100
+            # pos_y = random() * 100
+            # while self.map.obstacle_collision_detection([pos_x, pos_y]):
+            #     pos_x = random() * 100
+            #     pos_y = random() * 100
+            # self.pursuit[i].dynamic_model.initial_x = pos_x
+            # self.pursuit[i].dynamic_model.initial_y = pos_y
             self.pursuit[i].dynamic_model.reset_theta(initial_pos_eva)
     
     def save_model_trained(self):
@@ -258,7 +258,7 @@ class PurEva_2D_Game(object):
         
         if show_map:
             plt.figure('map')
-            self.map.polt_obstacle()
+            self.map.plot_map()
             circle_theta = np.linspace(0, 2 * np.pi, 200)
             color = ['b','g','r']
             for i in range(self.num_pur):

@@ -8,7 +8,7 @@
 # Description: dynamic mode
 # Last Modified time: 2021-07-05 17:06:19 星期一
 
-
+VEL_DISCOUNT = 0.1
 from math import pi, sin, cos
 import math 
 
@@ -42,9 +42,11 @@ class UAVPLANE(object):
             theta_next += pi*2
         
         self.theta.append(theta_next)
-        if cosllision == True:
-            self.x.append(self.x[-1])
-            self.y.append(self.y[-1])
+        if cosllision == True: 
+            # self.x.append(self.x[-1])
+            # self.y.append(self.y[-1])
+            self.x.append(self.x[-1] + self.vel* VEL_DISCOUNT* cos(self.theta[-1])* TIME)
+            self.y.append(self.y[-1] + self.vel* VEL_DISCOUNT* sin(self.theta[-1])* TIME)
         else:
             self.x.append(self.x[-1] + self.vel* cos(self.theta[-1])* TIME)
             self.y.append(self.y[-1] + self.vel* sin(self.theta[-1])* TIME)

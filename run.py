@@ -21,8 +21,8 @@ def learn():
                 break
         print("epsidoe",eposide,"reward",reward, results[0], results[1])
         learn_test(eposide)
-        # env.plot(show_map = True, show_dis = False, show_reward = False, show_win_rate = False, save_fig = False)
-        # plt.show()
+        env.plot(show_map = True, show_dis = False, show_reward = False, show_win_rate = False, save_fig = False)
+        plt.show()
     plt.figure('test')
     plt.plot(range(len(num_pw)),num_pw)
     
