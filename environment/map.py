@@ -1,4 +1,13 @@
 
+#!/usr/bin/env python
+# -*- coding:UTF-8 -*-
+# Author: Jiebang
+# Filename: map.py
+# Creat Time: 2021-09-05 16:59:11 星期天
+# Version: 1.0
+
+# Description: for the map 
+
 """
 Create the map for the pursuit evasion game
 author: Jiebang
@@ -6,8 +15,8 @@ author: Jiebang
 
 import numpy as np
 import matplotlib.pyplot as plt
-import random
 import math
+import random
 
 class PurEvaMap(object):
     '''
@@ -21,73 +30,48 @@ class PurEvaMap(object):
         -                      -
        0------------------------
     '''
-    def __init__(self,length,width):
-        self.length = length
-        self.width = width
+    def __init__(self, length, width):
+        self.length = length # the length of map
+        self.width = width # the width of map
+        self.obs_density = 20
+        self.obs_radius = 4
+        self.obstacle = []
+        for i in range(int(self.length/self.obs_density)):
+            for j in range(int(self.width/self.obs_density)):
+                self.obstacle.append([(i+1)*self.obs_density, (j+1)*self.obs_density])
         
-        self.pos_obstacle = [[length/5, width/5],
-                            [length/5, width/5], 
-                            [length/5, width/5], 
-                            [length/5, width/5],
-                            [length/5, width/5],
-                            [length/5, width/5],
-                            [length/5, width/5]]
-        self.radius_obstacle = [15,15,15,15]
-
-    def collection_detection(self,x,y):
-        if x < 0 or x > self.length:
-            return True
-        elif y < 0 or y > self.width:
-            return True
-        else:
-            return False
-    
-    # def generate_obstacle(self):
-    #     """
-    #     bulid obstacle of map
-    #     """
-    #     def _cal_distance(a_pos,b_pos):
-    #         return math.sqrt((a_pos[0]-b_pos[0])**2 + (a_pos[1]-b_pos[1])**2)
-        
-    #     center_a = [random.random()*40+30,random.random()*40+30]
-    #     center_b = []
-    #     for i in range(3):
-    #         center_b_tem = [random.random()*80+10,random.random()*80+10]
-    #         while _cal_distance(center_b_tem,center_a) <= 25:
-    #             center_b_tem = [random.random()*80+10,random.random()*80+10]
-    #         center_b.append(center_b_tem)
-        
-    #     return center_a, center_b
-
-    def polt_obstacle(self):
-        circle_theta = np.linspace(0, 2 * np.pi, 200)
-        circle_x = self.radius_obstacle[0]*np.cos(circle_theta) + self.pos_obstacle[0][0]
-        circle_y = self.radius_obstacle[0]*np.sin(circle_theta) + self.pos_obstacle[0][1]
-        plt.plot(circle_x,circle_y,color="darkred", linewidth=2)
-        for i in range(3):
-            circle_x = self.radius_obstacle[i+1]*np.cos(circle_theta) + self.pos_obstacle[i+1][0]
-            circle_y = self.radius_obstacle[i+1]*np.sin(circle_theta) + self.pos_obstacle[i+1][1]
-            plt.plot(circle_x,circle_y,color="darkred", linewidth=2)
-        # plt.show()
-        # plt.xlim(0,100)
-        # plt.ylim(0,100)
-    
-    def draw_map(self):
-        pass
+    def collection_detection(self, pos): 
+        flag = False
+        if pos[0] < 0 or pos[0] > self.length or pos[1] < 0 or pos[1] > self.width:
+            flag = True
+        elif self.obstacle_collision_detection(pos) == True:
+            flag = True
+        return flag
 
     def obstacle_collision_detection(self, pos):
         collision_flag = False
         def _cal_distance(a_pos,b_pos):
             return math.sqrt((a_pos[0]-b_pos[0])**2 + (a_pos[1]-b_pos[1])**2)
-        for i in range(4):
-            if _cal_distance(self.pos_obstacle[i], pos) <= self.radius_obstacle[i]:
+        
+        for i in range(len(self.obstacle)):
+            if _cal_distance(self.obstacle[i], pos) <= self.obs_radius:
                 collision_flag = True
                 break
-        if pos[0] >= self.length or pos[0] <=0 or pos[1] <= 0 or pos[1] >= self.width:
-            collision_flag = True
         return collision_flag
 
+    def plot_map(self):
+        circle_theta = np.linspace(0, 2 * np.pi, 200)
+        for i in range(len(self.obstacle)):
+            circle_x = self.obs_radius*np.cos(circle_theta) + self.obstacle[i][0]
+            circle_y = self.obs_radius*np.sin(circle_theta) + self.obstacle[i][1]
+            plt.plot(circle_x,circle_y,color="darkred", linewidth=2)
+
+
 if __name__ == "__main__":
+    x = random.random()*100
+    y = random.random()*100
     map = PurEvaMap(100,100)
-    map.polt_obstacle()
+    print(map.collection_detection([x,y]))
+    map.plot_map()
+    plt.scatter(x,y)
     plt.show()
