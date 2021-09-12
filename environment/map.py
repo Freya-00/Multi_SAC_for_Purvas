@@ -8,69 +8,69 @@
 
 # Description: for the map 
 
-"""
-Create the map for the pursuit evasion game
-author: Jiebang
-"""
-
 import numpy as np
 import matplotlib.pyplot as plt
 import math
 import random
 
+''' High Parameters'''
+OBS_DENSITY = 20
+OBS_RADIUS = 5
+MARGIN = 0.1
+
+'''Class Defination'''
 class PurEvaMap(object):
-    '''
-    Map:
-                length
-        ------------------------
-        -                      - 
-        -                      -
-        -                      - width
-        -                      -
-        -                      -
-       0------------------------
-    '''
-    def __init__(self, length, width):
-        self.length = length # the length of map
-        self.width = width # the width of map
-        self.obs_density = 20
-        self.obs_radius = 4
+
+    def __init__(self):
+        self.length = 160 # the length of map
+        self.width = 100 # the width of map
         self.obstacle = []
-        for i in range(int(self.length/self.obs_density)):
-            for j in range(int(self.width/self.obs_density)):
-                self.obstacle.append([(i+1)*self.obs_density, (j+1)*self.obs_density])
-        
-    def collection_detection(self, pos): 
+        for i in range(int(self.length/OBS_DENSITY-1)):
+            for j in range(int(self.width/OBS_DENSITY-1)):
+                self.obstacle.append([(i+1)*OBS_DENSITY, (j+1)*OBS_DENSITY])
+    
+    def map_detect(self, pos):
+        'return wether collison of map board and obs'
+        return self._board_detect(pos), self._obs_detect(pos)
+
+    def _board_detect(self, pos):
+        'pos = [x,y]'
         flag = False
         if pos[0] < 0 or pos[0] > self.length or pos[1] < 0 or pos[1] > self.width:
             flag = True
-        elif self.obstacle_collision_detection(pos) == True:
-            flag = True
         return flag
 
-    def obstacle_collision_detection(self, pos):
+    def _obs_detect(self, pos):
         collision_flag = False
         def _cal_distance(a_pos,b_pos):
             return math.sqrt((a_pos[0]-b_pos[0])**2 + (a_pos[1]-b_pos[1])**2)
         
         for i in range(len(self.obstacle)):
-            if _cal_distance(self.obstacle[i], pos) <= self.obs_radius:
+            if _cal_distance(self.obstacle[i], pos) <= OBS_RADIUS:
                 collision_flag = True
                 break
         return collision_flag
-
+    
     def plot_map(self):
+        plt.figure('Map')
+        map_board_x = np.arange(-1,self.length+1)
+        map_board_y = np.arange(-1,self.width+1)
+        plt.plot(map_board_x,0*map_board_x, color='black')
+        plt.plot(map_board_x,0*map_board_x + self.width,color='black')
+        plt.plot(0*map_board_y, map_board_y,color='black')
+        plt.plot(0*map_board_y + self.length,map_board_y,color='black')
         circle_theta = np.linspace(0, 2 * np.pi, 200)
         for i in range(len(self.obstacle)):
-            circle_x = self.obs_radius*np.cos(circle_theta) + self.obstacle[i][0]
-            circle_y = self.obs_radius*np.sin(circle_theta) + self.obstacle[i][1]
+            circle_x = OBS_RADIUS*np.cos(circle_theta) + self.obstacle[i][0]
+            circle_y = OBS_RADIUS*np.sin(circle_theta) + self.obstacle[i][1]
             plt.plot(circle_x,circle_y,color="darkred", linewidth=2)
-
+        plt.axis('scaled')
+        
 
 if __name__ == "__main__":
     x = random.random()*100
     y = random.random()*100
-    map = PurEvaMap(100,100)
+    map = PurEvaMap()
     print(map.collection_detection([x,y]))
     map.plot_map()
     plt.scatter(x,y)

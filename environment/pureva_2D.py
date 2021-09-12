@@ -69,18 +69,18 @@ class PurEva_2D_Game(object):
         self.reward_one_eposide_purs = []
         self.reward_one_eposide_eva = []
 
-        initial_pos_purs = [[20.0, 20.0], [50.0, 80.0], [80.0, 30.0]]
+        initial_pos_purs = [[10.0, 10.0], [10.0, 90.0], [90.0, 10.0]]
         initial_pos_eva = [50.0, 50.0]
         self.pursuit = [] # agent of pursuit gamers
         for i in range(num_pur):
-            self.pursuit.append(
+            self.pursuit.append( 
                 PurEva_2D_Agent('pur%d'%i, self.state_dim_purs, self.action_dim,
                                 initial_pos_purs[i][0], initial_pos_purs[i][1],
                                 self.vel_pur, share_action=True, load_existing_model= test))
             self.pursuit[i].dynamic_model.reset_theta(initial_pos_eva)
             self.reward_record_purs.append([])
             self.reward_one_eposide_purs.append(0)
-
+    
         
         self.evasion = [] # agent of evasion gamers
         for j in range(num_eva):
@@ -155,11 +155,11 @@ class PurEva_2D_Game(object):
 
     def set_random_position(self):
         for j in range(self.num_eva):
-            pos_x = random() * 100
-            pos_y = random() * 100
+            pos_x = random() * 40+40
+            pos_y = random() * 40+40
             while self.map.obstacle_collision_detection([pos_x, pos_y]):
-                pos_x = random() * 100
-                pos_y = random() * 100
+                pos_x = random() * 40+40
+                pos_y = random() * 40+40
             self.evasion[j].dynamic_model.initial_x = pos_x
             self.evasion[j].dynamic_model.initial_y = pos_y
             initial_pos_eva = [pos_x,pos_y]
@@ -227,11 +227,16 @@ class PurEva_2D_Game(object):
         return state
     
     def _get_reward_and_done(self,t):
+        position_last = []
+        for pur in self.pursuit:
+            position_last.append([pur.dynamic_model.x[-2], pur.dynamic_model.y[-2]])
+        position_last.append([self.evasion[-1].dynamic_model.x[-2], self.evasion[-1].dynamic_model.y[-2]])
+        
         position_all = []
         for pur in self.pursuit:
             position_all.append(pur.dynamic_model.get_pos())
         position_all.append(self.evasion[-1].dynamic_model.get_pos())
-        done, reward_pur, reward_eva, results = self.module_reward.return_reward(position_all,t)
+        done, reward_pur, reward_eva, results = self.module_reward.return_reward(position_last, position_all,t)
         return done, reward_pur, reward_eva, results
 
     def _update_policy_purs(self, state, ac, rp, next_state, done, t):

@@ -24,7 +24,7 @@ POS_OBSTACLE = [[LENGTH/4, WIDTH/4],
                 [LENGTH/4, 3*WIDTH/4], 
                 [3*LENGTH/4, 3*WIDTH/4]]
 RADIUS_OBSTACLE = [15,15,15,15]
-MARGIN = 1.5
+MARGIN = 0.5
 
 class PurEva_2D_Reward(object):
     def __init__(self,
@@ -44,12 +44,17 @@ class PurEva_2D_Reward(object):
         self.game_winner = []
         self.win_rate = []
 
-    def return_reward(self, position_all, t):
+    def return_reward(self, position_last, position_all, t):
         'position_all = [[P1],[P2],[P3],[E1]]'
-        done, reward_pur, reward_eva, results = self._commom_reward_share(position_all, t)
+        done, reward_pur, reward_eva, results = self._commom_reward_share(position_last, position_all, t)
         return done, reward_pur, reward_eva, results
 
-    def _commom_reward_share(self, position_all, time):
+    def _commom_reward_share(self, position_last, position_all, time):
+        pos_pur_last = position_last[0:3]
+        pos_eva_last = position_last[-1]
+        dis_purs_eva_last = []
+        for i in range(3):
+            dis_purs_eva_last.append(self._cal_distance(pos_pur_last[i],pos_eva_last))
         pos_pur = position_all[0:3]
         pos_eva = position_all[-1]
         dis_purs_eva = [] # [d_p1e,d_p2e,d_p3e]
@@ -101,9 +106,9 @@ class PurEva_2D_Reward(object):
         r = 0
         for i in range(len(POS_OBSTACLE)):
             if self._cal_distance(POS_OBSTACLE[i], pos) <= (RADIUS_OBSTACLE[i] + MARGIN):
-                r = -10
+                r = -1
         if pos[0] >= (self.map_length-MARGIN) or pos[0] <= MARGIN or pos[1] <= MARGIN or pos[1] >= (self.map_width-MARGIN):
-            r = -10
+            r = -1
         return r
 
     def _winrate_update(self, result):

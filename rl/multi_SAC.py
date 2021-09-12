@@ -1,44 +1,44 @@
 #!/usr/bin/env python
 # -*- coding:UTF-8 -*-
 # Author: Jiebang
-# Filename: sac_2d_agent.py
-# Creat Time: 2021-06-01 20:19:47 星期二
+# Filename: multi_SAC.py
+# Creat Time: 2021-09-11 15:34:11 星期六
 # Version: 1.0
 
-# Description: # Agent class for env including rl networks and dynamic model
-
-
+# Description: multi SAC
 import sys
-
 sys.path.append("../code")
-from random import random
-import time
+
 from rl.sac_adjust_alpha.replay_memory import ReplayMemory
 from rl.sac_adjust_alpha.sac import SAC
-from agent.dynamic_model.uavplane import UAVPLANE
 
-REPLAY_BUFFER_SIZE = 1000000
-SEED = 123456
-
-
-class PurEva_2D_Agent(object):
+class MULTI_SAC_NETWORKS(object):
     def __init__(self,
-                agent_label,
-                state_dim,
-                action_dim,
-                initial_x,
-                initial_y,
-                agent_vel,
-                policy_deterministic = False,
-                creat_network = True,
-                share_action = False,
-                load_existing_model = False
-                    ):
-        self.label = agent_label # the name of agent
-        self.network_exist = creat_network # whether to create a network
-        self.load_existing_model = load_existing_model # whether to load model existted
-       
-        self.dynamic_model = UAVPLANE(initial_x, initial_y, agent_vel)
+                num_networks,
+                dim_action,
+                dim_state,
+                flag_policy_deterministic = False,
+                flag_creat_network = True,
+                flag_share_action = False,
+                flag_load_existing_model = False
+                ):
+        self.num_net = num_networks
+        self.nets = []
+        if flag_policy_deterministic == True:
+            policy_type = "Deterministic"
+        else:
+            policy_type = "Gaussian"
+        
+        if flag_creat_network == True:
+            for i in range(num_networks):
+                self.nets.append(SAC(dim_state, dim_action, policy_type = policy_type))
+
+
+
+    def update_networks(self):
+        pass
+        
+        
         
         if self.network_exist == True:
             if share_action == True and policy_deterministic == True:
@@ -75,5 +75,7 @@ class PurEva_2D_Agent(object):
                         'rl/save_model/sac_critic_multi_pur_eva_%s'%self.label)
 
 
+
 if __name__ == "__main__":
     pass
+
