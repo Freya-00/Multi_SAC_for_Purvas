@@ -62,7 +62,7 @@ class PurEva_2D_Reward(object):
     def _punish_against_the_wall(self, pos):
         r = 0
         for i in range(len(self.obs_pos)):
-            if self._cal_distance(self.obs_pos[i], pos) <= (self.obs_radius[i] + MARGIN):
+            if self._cal_distance(self.obs_pos[i], pos) <= (self.obs_radius + MARGIN):
                 r = REWARD_COLLISION
                 break
         if pos[0] >= (self.map_length-MARGIN) or pos[0] <= MARGIN or pos[1] <= MARGIN or pos[1] >= (self.map_width-MARGIN):

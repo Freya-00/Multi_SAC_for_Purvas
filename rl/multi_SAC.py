@@ -30,13 +30,14 @@ class MULTI_SAC_NETWORKS(object):
             self.nets.append(
                 PurEva_2D_Agent('%s_%d'%(self.label,i), dim_state, dim_action,
                                 share_action= False,
+                                flag_automatic_entropy_tuning = True
                                 )
             )
 
     def get_action(self, state, evalue = False):
         action = []
         for net in self.nets:
-            action.append(net.get_action(state))
+            action.append(net.get_action(state, evalue = evalue))
         return action
     
     def update_policy(self, state, action, reward, next_state, done):
@@ -47,12 +48,11 @@ class MULTI_SAC_NETWORKS(object):
 
     def save_models(self):
         for net in self.nets:
-            net.save_model('multi_pur_eva','%s_%s'%(net.label, time.time()))
+            net.save_models()
 
     def load_models(self):
         for net in self.nets:
-            net.load_model('rl/save_model/sac_actor_multi_pur_eva_%s'%net.label,
-                        'rl/save_model/sac_critic_multi_pur_eva_%s'%net.label)
+            net.load_models()
 
 
 

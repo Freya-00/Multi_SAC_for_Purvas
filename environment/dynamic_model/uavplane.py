@@ -7,7 +7,7 @@
 
 # Description: dynamic mode
 # Last Modified time: 2021-07-05 17:06:19 星期一
-
+DECISION_INTERVAL = 2
 VEL_DISCOUNT = 0.1
 from math import pi, sin, cos
 import math 
@@ -46,13 +46,14 @@ class UAVPLANE(object):
             # self.x.append(self.x[-1] + self.vel* VEL_DISCOUNT* cos(self.theta[-1]))
             # self.y.append(self.y[-1] + self.vel* VEL_DISCOUNT* sin(self.theta[-1]))
         else:
-            self.x.append(self.x[-1] + self.vel* cos(self.theta[-1]))
-            self.y.append(self.y[-1] + self.vel* sin(self.theta[-1]))
+            self.x.append(self.x[-1] + self.vel* cos(self.theta[-1])* DECISION_INTERVAL)
+            self.y.append(self.y[-1] + self.vel* sin(self.theta[-1])* DECISION_INTERVAL)
 
     def get_next_pos(self, theta_d1):
         theta_next = self.theta[-1] + theta_d1.tolist()[0]* pi/self.turning_angle
-        next_x = self.x[-1] + self.vel* cos(theta_next)
-        next_y = self.y[-1] + self.vel* sin(theta_next)
+        next_x = self.x[-1] + self.vel* cos(theta_next)* DECISION_INTERVAL
+        next_y = self.y[-1] + self.vel* sin(theta_next)* DECISION_INTERVAL
+        
         return [next_x, next_y]
 
     def reset_theta(self, taregt_pos):

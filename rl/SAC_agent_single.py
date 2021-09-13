@@ -11,11 +11,9 @@
 import sys
 
 sys.path.append("../code")
-from random import random
 import time
 from rl.sac_adjust_alpha.replay_memory import ReplayMemory
 from rl.sac_adjust_alpha.sac import SAC
-from agent.dynamic_model.uavplane import UAVPLANE
 
 REPLAY_BUFFER_SIZE = 1000000
 SEED = 123456
@@ -29,7 +27,8 @@ class PurEva_2D_Agent(object):
                 policy_deterministic = False,
                 creat_network = True,
                 share_action = False,
-                load_existing_model = False
+                load_existing_model = False,
+                flag_automatic_entropy_tuning = False
                     ):
         self.label = agent_label # the name of agent
         self.network_exist = creat_network # whether to create a network
@@ -38,10 +37,9 @@ class PurEva_2D_Agent(object):
         if self.network_exist == True:
             if share_action == True and policy_deterministic == True:
                 self.net = SAC(state_dim, action_dim, share_action = True, policy_type = "Deterministic")
-            elif share_action == True:
-                self.net = SAC(state_dim, action_dim, share_action = True)
             else:
-                self.net = SAC(state_dim, action_dim, share_action = False)
+                self.net = SAC(state_dim, action_dim, share_action = share_action,
+                            flag_automatic_entropy_tuning = flag_automatic_entropy_tuning)
             self.memory = ReplayMemory(REPLAY_BUFFER_SIZE, SEED)
         
         if self.load_existing_model == True:
@@ -63,7 +61,7 @@ class PurEva_2D_Agent(object):
             # print('learn')
 
     def save_models(self):
-        self.net.save_model('multi_pur_eva','%s_%s'%(self.label, time.time()))
+        self.net.save_model('multi_pur_eva','%s_%s'%(self.label, time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
 
     def load_models(self):
         self.net.load_model('rl/save_model/sac_actor_multi_pur_eva_%s'%self.label,

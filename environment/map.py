@@ -24,6 +24,7 @@ class PurEvaMap(object):
     def __init__(self):
         self.length = 160 # the length of map
         self.width = 100 # the width of map
+        self.obs_radius = OBS_RADIUS
         self.obstacle = []
         for i in range(int(self.length/OBS_DENSITY-1)):
             for j in range(int(self.width/OBS_DENSITY-1)):
@@ -59,13 +60,12 @@ class PurEvaMap(object):
             return math.sqrt((a_pos[0]-b_pos[0])**2 + (a_pos[1]-b_pos[1])**2)
         
         for i in range(len(self.obstacle)):
-            if _cal_distance(self.obstacle[i], pos) <= OBS_RADIUS:
+            if _cal_distance(self.obstacle[i], pos) <= self.obs_radius:
                 collision_flag = True
                 break
         return collision_flag
     
     def plot_map(self):
-        plt.figure('Map')
         map_board_x = np.arange(-1,self.length+1)
         map_board_y = np.arange(-1,self.width+1)
         plt.plot(map_board_x,0*map_board_x, color='black')
@@ -74,8 +74,8 @@ class PurEvaMap(object):
         plt.plot(0*map_board_y + self.length,map_board_y,color='black')
         circle_theta = np.linspace(0, 2 * np.pi, 200)
         for i in range(len(self.obstacle)):
-            circle_x = OBS_RADIUS*np.cos(circle_theta) + self.obstacle[i][0]
-            circle_y = OBS_RADIUS*np.sin(circle_theta) + self.obstacle[i][1]
+            circle_x = self.obs_radius*np.cos(circle_theta) + self.obstacle[i][0]
+            circle_y = self.obs_radius*np.sin(circle_theta) + self.obstacle[i][1]
             plt.plot(circle_x,circle_y,color="darkred", linewidth=2)
         plt.axis('scaled')
         
