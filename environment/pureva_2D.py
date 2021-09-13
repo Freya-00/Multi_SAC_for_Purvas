@@ -80,7 +80,7 @@ class PurEva_2D_Game(object):
             self.pursuit[i].dynamic_model.reset_theta(initial_pos_eva)
             self.reward_record_purs.append([])
             self.reward_one_eposide_purs.append(0)
-    
+
         
         self.evasion = [] # agent of evasion gamers
         for j in range(num_eva):
