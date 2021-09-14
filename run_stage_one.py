@@ -7,6 +7,7 @@
 
 # Description: run for learning stage one
 
+from math import e
 import sys
 
 sys.path.append("../code")
@@ -14,7 +15,7 @@ sys.path.append("../code")
 from rl.multi_SAC import MULTI_SAC_NETWORKS
 from environment.swamp_hunt import SWAMP_HUNT_GAME
 import matplotlib.pyplot as plt
-EPOSIDE = 10000
+EPOSIDE = 5000
 MAX_STEP = 80
 AC_DIM = 1
 STATE_DIM = 12
@@ -27,7 +28,7 @@ class Stage_One(object):
 
     def run(self):
         for epo in range(EPOSIDE):
-            state_temp = self.game.initial_environment()
+            state_temp = self.game.initial_environment(epo)
             results = 'NOT CATCH'
             for step in range(MAX_STEP):
                 action = self.net_pur.get_action(state_temp)
@@ -37,9 +38,11 @@ class Stage_One(object):
                 if done == True:
                     results = 'CATCH'
                     break
-            if epo >=100 and epo %10 ==0:
-                self.game.plot('map')
-                plt.show()
+            if epo % 100 == 0 and epo > 0:
+                self.game.plot('map', True)
+                self.game.plot('reward', True)
+                self.game.plot('time', True)
+                # plt.show()
                 pass
             if epo%100 == 0:
                 self.save_model()
@@ -48,7 +51,7 @@ class Stage_One(object):
     def test_learn(self):
 
         for epo in range(100):
-            state_temp = self.game.initial_environment()
+            state_temp = self.game.initial_environment(epo)
             results = 'NOT CATCH'
             for step in range(MAX_STEP):
                 action = self.net_pur.get_action(state_temp, evalue=True)
@@ -58,9 +61,12 @@ class Stage_One(object):
                 if done == True:
                     results = 'CATCH'
                     break
-            if epo %10 ==0:
+            if epo % 10 ==0:
                 self.game.plot('map')
-                plt.show()
+                self.game.plot('map', True)
+                self.game.plot('reward', True)
+                self.game.plot('time', True)
+                # plt.show()
             print('test episode %d pur %s'%(epo, results))
     
     def save_model(self):

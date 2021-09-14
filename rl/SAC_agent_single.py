@@ -61,7 +61,7 @@ class PurEva_2D_Agent(object):
             # print('learn')
 
     def save_models(self):
-        self.net.save_model('multi_pur_eva','%s_%s'%(self.label, time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
+        self.net.save_model('multi_pur_eva','%s_%s'%(self.label, time.strftime("%Y-%m-%d", time.localtime())))
 
     def load_models(self):
         self.net.load_model('rl/save_model/sac_actor_multi_pur_eva_%s'%self.label,
