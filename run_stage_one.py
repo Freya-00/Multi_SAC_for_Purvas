@@ -15,7 +15,7 @@ sys.path.append("../code")
 from rl.multi_SAC import MULTI_SAC_NETWORKS
 from environment.swamp_hunt import SWAMP_HUNT_GAME
 import matplotlib.pyplot as plt
-EPOSIDE = 5000
+EPOSIDE = 10000
 MAX_STEP = 80
 AC_DIM = 1
 STATE_DIM = 12
@@ -41,13 +41,13 @@ class Stage_One(object):
                 if done == True:
                     results = 'CATCH'
                     break
-            if epo % 100 == 0 and epo > 0:
+            if epo %1000 == 0 and epo > 0:
                 self.game.plot('map', True)
                 self.game.plot('reward', True)
                 self.game.plot('time', True)
                 # plt.show()
                 pass
-            if epo%100 == 0:
+            if epo %1000 == 0:
                 self.save_model()
             print('episode %d pur %s'%(epo,results))
 
@@ -67,8 +67,8 @@ class Stage_One(object):
                     break
             if epo % 10 ==0 and epo >0:
                 self.game.plot('map', False)
-            #     # self.game.plot('reward', False)
-            #     # self.game.plot('time', False)
+                # self.game.plot('reward', False)
+                # self.game.plot('time', False)
                 plt.show()
             print('test episode %d pur %s'%(epo, results))
         print('win rates is %d'%win_times)
@@ -77,6 +77,7 @@ class Stage_One(object):
 
 if __name__ == "__main__":
     a = Stage_One()
-    a.load_models()
-    a.test_learn()
-    # a.save_model()
+    # a.load_models()
+    a.run()
+    # a.test_learn()
+    a.save_model()

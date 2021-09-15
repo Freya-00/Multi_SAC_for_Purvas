@@ -15,7 +15,7 @@ import math
 Definition of hyperparameters
 """
 MARGIN = 3
-REWARD_COLLISION = -2
+REWARD_COLLISION = -3
 SHAPING_GAMMA = 0.9
 
 """
