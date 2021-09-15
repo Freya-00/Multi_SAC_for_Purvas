@@ -129,7 +129,6 @@ class SAC(object):
     def save_model(self, env_name, suffix="", actor_path=None, critic_path=None):
         if not os.path.exists('models/'):
             os.makedirs('models/')
-
         if actor_path is None:
             actor_path = "models/sac_actor_{}_{}".format(env_name, suffix)
         if critic_path is None:

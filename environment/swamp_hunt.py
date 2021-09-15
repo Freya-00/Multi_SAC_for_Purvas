@@ -189,7 +189,7 @@ class SWAMP_HUNT_GAME(object):
 
             plt.figure('catch time')
             plt.plot(range(len(self.pur_success_time)), self.pur_success_time)
-            # date = _moving_average(self.pur_success_time,50)
+            date = _moving_average(self.pur_success_time,50)
             plt.plot(range(len(date)),date)
             if save == True:
                 plt.savefig('./results/catch_time_%s'%(time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime())))

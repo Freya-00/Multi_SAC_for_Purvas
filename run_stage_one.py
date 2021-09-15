@@ -26,6 +26,9 @@ class Stage_One(object):
         self.net_pur = MULTI_SAC_NETWORKS('pur', 4, 1, 15)
         self.game_results = []
 
+    def load_models(self):
+        self.net_pur.load_models()
+    
     def run(self):
         for epo in range(EPOSIDE):
             state_temp = self.game.initial_environment(epo)
@@ -49,7 +52,7 @@ class Stage_One(object):
             print('episode %d pur %s'%(epo,results))
 
     def test_learn(self):
-
+        win_times = 0
         for epo in range(100):
             state_temp = self.game.initial_environment(epo)
             results = 'NOT CATCH'
@@ -60,19 +63,20 @@ class Stage_One(object):
                 state_temp = next_state
                 if done == True:
                     results = 'CATCH'
+                    win_times += 1
                     break
-            if epo % 10 ==0:
-                self.game.plot('map')
-                self.game.plot('map', True)
-                self.game.plot('reward', True)
-                self.game.plot('time', True)
-                # plt.show()
+            if epo % 10 ==0 and epo >0:
+                self.game.plot('map', False)
+            #     # self.game.plot('reward', False)
+            #     # self.game.plot('time', False)
+                plt.show()
             print('test episode %d pur %s'%(epo, results))
-    
+        print('win rates is %d'%win_times)
     def save_model(self):
         self.net_pur.save_models()
 
 if __name__ == "__main__":
     a = Stage_One()
-    a.run()
-    a.save_model()
+    a.load_models()
+    a.test_learn()
+    # a.save_model()
