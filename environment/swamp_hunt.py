@@ -24,7 +24,7 @@ Definition of hyperparameters
 NUM_PUR = 4
 NUM_EVA = 1
 EVA_MOVE = False
-CAPTURE_DISTANCE = 2 # Captured distance
+CAPTURE_DISTANCE = 3 # Captured distance
 VEL = 2
 INITIAL_POS_PUR = [[7,7],[153,7],[153,93],[7,93]]
 INITIAL_POS_EVA = [[70,50]]

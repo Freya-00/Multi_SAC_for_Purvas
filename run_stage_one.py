@@ -19,14 +19,14 @@ import numpy as np
 EPOSIDE = 10000
 MAX_STEP = 80
 AC_DIM = 1
-STATE_DIM = 12
+STATE_DIM = 4
 
 ############## Main Class ############################
 class Stage_One(object):
     'pur catch not move target'
     def __init__(self):
         self.game = SWAMP_HUNT_GAME()
-        self.net_pur = MULTI_SAC_NETWORKS('pur', 4, 1, 15)
+        self.net_pur = MULTI_SAC_NETWORKS('pur', 4, 1, 4)
         self.game_results = []
 
     def load_models(self):
@@ -51,7 +51,7 @@ class Stage_One(object):
                 self.game.plot('time', True)
                 # plt.show()
                 pass
-            if epo %1000 == 0:
+            if epo %1000 == 0 and epo >0:
                 self.save_model()
             print('episode %d pur %s'%(epo,results))
 
@@ -61,7 +61,7 @@ class Stage_One(object):
             state_temp = self.game.initial_environment(epo)
             results = 'NOT CATCH'
             for step in range(MAX_STEP):
-                action_pur = self.net_pur.get_action(state_temp, evalue=False)
+                action_pur = self.net_pur.get_action(state_temp, evalue=True)
                 action_eva = [np.array([0])]
                 next_state, _, _, done = self.game.step(action_pur, action_eva)
                 # self.net_pur.update_policy(state_temp, action, rw_pur, next_state, done)
@@ -82,7 +82,7 @@ class Stage_One(object):
 
 if __name__ == "__main__":
     a = Stage_One()
-    a.load_models()
-    # a.run()
-    a.test_learn()
+    # a.load_models()
+    a.run()
+    # a.test_learn()
     # a.save_model()

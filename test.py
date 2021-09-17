@@ -11,20 +11,17 @@
 
 import sys
 
-from torch._C import FloatStorageBase
 
 sys.path.append("../code")
 
 from environment.pureva_2D import PurEva_2D_Game
 import matplotlib.pyplot as plt
-
+import numpy as np
 
 
 if __name__ == "__main__":
     a = [1,2,3,45,67]
-    b = False
-    c = True
-    d = (b or c)
-    print(d)
+    b = np.array(a)
+    print(b[-3:-1])
 
 

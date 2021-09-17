@@ -10,7 +10,7 @@ import sys
 sys.path.append("../code")
 import time
 from rl.SAC_agent_single import PurEva_2D_Agent
-
+import numpy as np
 
 class MULTI_SAC_NETWORKS(object):
     def __init__(self,
@@ -37,14 +37,19 @@ class MULTI_SAC_NETWORKS(object):
 
     def get_action(self, state, evalue = False):
         action = []
-        for net in self.nets:
-            action.append(net.get_action(state, evalue = evalue))
+        for i in range(self.num_net):
+            if self.label == 'pur':
+                st = np.append(state[i:i+2],state[-3:-1])
+            action.append(self.nets[i].get_action(st, evalue = evalue))
         return action
     
     def update_policy(self, state, action, reward, next_state, done):
         '需要对数据进行处理'
         for i in range(self.num_net):
-            self.nets[i].memory.push(state, action[i], reward[i], next_state, done)
+            if self.label == 'pur':
+                state_single = np.append(state[i:i+2],state[-3:-1])
+                state_single_next = np.append(next_state[i:i+2],state[-3:-1])
+            self.nets[i].memory.push(state_single, action[i], reward[i], state_single_next, done)
             self.nets[i].update_policy()
 
     def save_models(self):
