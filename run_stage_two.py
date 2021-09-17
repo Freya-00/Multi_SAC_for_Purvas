@@ -1,12 +1,11 @@
 #!/usr/bin/env python
 # -*- coding:UTF-8 -*-
 # Author: Jiebang
-# Filename: run_stage_one.py
-# Creat Time: 2021-09-13 10:53:37 星期一
+# Filename: run_stage_two.py
+# Creat Time: 2021-09-17 09:51:26 星期五
 # Version: 1.0
 
-# Description: run for learning stage one
-
+# Description: training for stage TWO
 import sys
 
 sys.path.append("../code")
@@ -14,7 +13,7 @@ sys.path.append("../code")
 from rl.multi_SAC import MULTI_SAC_NETWORKS
 from environment.swamp_hunt import SWAMP_HUNT_GAME
 import matplotlib.pyplot as plt
-import numpy as np
+
 ############## Super Hyperparaters ####################
 EPOSIDE = 10000
 MAX_STEP = 80
@@ -22,11 +21,12 @@ AC_DIM = 1
 STATE_DIM = 12
 
 ############## Main Class ############################
-class Stage_One(object):
+class Stage_Two(object):
     'pur catch not move target'
     def __init__(self):
         self.game = SWAMP_HUNT_GAME()
         self.net_pur = MULTI_SAC_NETWORKS('pur', 4, 1, 15)
+        self.net_eva = MULTI_SAC_NETWORKS('eva', 1, 1, 15, flag_policy_deterministic= True)
         self.game_results = []
 
     def load_models(self):
@@ -38,9 +38,10 @@ class Stage_One(object):
             results = 'NOT CATCH'
             for step in range(MAX_STEP):
                 action_pur = self.net_pur.get_action(state_temp)
-                action_eva = [np.array([0])]
-                next_state, rw_pur, rw_eva, done = self.game.step(action_pur,action_eva)
+                action_eva = self.net_eva.get_action(state_temp)
+                next_state, rw_pur, rw_eva, done = self.game.step(action_pur, action_eva)
                 self.net_pur.update_policy(state_temp, action_pur, rw_pur, next_state, done)
+                self.net_eva.update_policy(state_temp, action_eva, rw_eva, next_state, done)
                 state_temp = next_state
                 if done == True:
                     results = 'CATCH'
@@ -61,28 +62,29 @@ class Stage_One(object):
             state_temp = self.game.initial_environment(epo)
             results = 'NOT CATCH'
             for step in range(MAX_STEP):
-                action_pur = self.net_pur.get_action(state_temp, evalue=False)
-                action_eva = [np.array([0])]
-                next_state, _, _, done = self.game.step(action_pur, action_eva)
+                action_pur = self.net_pur.get_action(state_temp)
+                action_eva = self.net_eva.get_action(state_temp)
+                next_state, rw_pur, rw_eva, done = self.game.step(action_pur, action_eva)
                 # self.net_pur.update_policy(state_temp, action, rw_pur, next_state, done)
                 state_temp = next_state
                 if done == True:
                     results = 'CATCH'
                     win_times += 1
                     break
-            # if epo % 10 ==0 and epo >0:
-                # self.game.plot('map', False)
+            if epo % 10 ==0 and epo >0:
+                self.game.plot('map', False)
                 # self.game.plot('reward', False)
                 # self.game.plot('time', False)
-                # plt.show()
+                plt.show()
             print('test episode %d pur %s'%(epo, results))
         print('win rates is %d'%win_times)
     def save_model(self):
         self.net_pur.save_models()
 
+
 if __name__ == "__main__":
-    a = Stage_One()
+    a = Stage_Two()
     a.load_models()
-    # a.run()
-    a.test_learn()
-    # a.save_model()
+    a.run()
+    # a.test_learn()
+    a.save_model()

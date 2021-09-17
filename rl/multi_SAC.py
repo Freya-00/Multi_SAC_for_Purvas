@@ -29,6 +29,7 @@ class MULTI_SAC_NETWORKS(object):
         for i in range(self.num_net):
             self.nets.append(
                 PurEva_2D_Agent('%s_%d'%(self.label,i), dim_state, dim_action,
+                                policy_deterministic= flag_policy_deterministic,
                                 share_action= False,
                                 flag_automatic_entropy_tuning = True
                                 )

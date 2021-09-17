@@ -48,7 +48,7 @@ class SWAMP_HUNT_GAME(object):
             self.reward_record_all.append([])
             self.reward_record_once.append(0)
         for j in range(NUM_EVA):
-            self.evasion.append(UAVPLANE(INITIAL_POS_EVA[j], 0))
+            self.evasion.append(UAVPLANE(INITIAL_POS_EVA[j], VEL))
         _ = self._update_env_parametres()
         
 
@@ -69,12 +69,12 @@ class SWAMP_HUNT_GAME(object):
         _ = self._update_env_parametres()
         return self._get_state()
     
-    def step(self, action):
+    def step(self, ac_pur, ac_eva):
         'step the game'
         'action = [pur.ac, eva.ac]'
         self.game_time[-1] += 1
-        ac_pur = action[:]
-        ac_eva = [np.array([0])]
+        ac_pur = ac_pur
+        ac_eva = ac_eva
         for i in range(NUM_PUR):
             pos_tem = self.pursuit[i].get_next_pos(ac_pur[i])
             b_c, o_c = self.map.map_detect(pos_tem)

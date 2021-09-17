@@ -10,7 +10,7 @@
 # Last Modified time: 2021-07-02 15:05:06 星期五
 
 import math
-
+import numpy as np
 """
 Definition of hyperparameters
 """
@@ -40,7 +40,7 @@ class PurEva_2D_Reward(object):
     def return_reward(self, pos_all, distance, game_done):
         'position_all = [[P1],[P2],[P3],[E1]]'
         reward_pur = self._course_one_pur(pos_all, distance, game_done)
-        reward_eva = 0
+        reward_eva = self._eva_reward(pos_all, distance)
         return reward_pur, reward_eva
 
     def _course_one_pur(self, pos_all, distance, game_done):
@@ -52,8 +52,13 @@ class PurEva_2D_Reward(object):
             r.append(r_collision + r_shaping + r_done)
         return r
 
-    def _eva_reward(self, dis_min, pos_eva):
+    def _eva_reward(self, pos_all, distance):
         re_evas= []
+        pos_eva = pos_all[-1]
+        dis_last = []
+        for i in range(4):
+            dis_last.append(distance[i][-1])
+        dis_min = np.array(dis_last).min()
         for _ in range(1):
             r = math.log(dis_min/10)
             re_evas.append(r + self._punish_against_the_wall(pos_eva))
