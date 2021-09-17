@@ -48,7 +48,7 @@ class SWAMP_HUNT_GAME(object):
             self.reward_record_all.append([])
             self.reward_record_once.append(0)
         for j in range(NUM_EVA):
-            self.evasion.append(UAVPLANE(INITIAL_POS_EVA[j], VEL))
+            self.evasion.append(UAVPLANE(INITIAL_POS_EVA[j], 0))
         _ = self._update_env_parametres()
         
 
