@@ -53,14 +53,15 @@ class Stage_One(object):
                 pass
             if epo %1000 == 0 and epo >0:
                 self.save_model()
+                self.test_learn()
             print('episode %d pur %s'%(epo,results))
 
     def test_learn(self):
         win_times = 0
-        for epo in range(100):
-            state_temp = self.game.initial_environment(epo)
+        for test_epo in range(100):
+            state_temp = self.game.initial_environment(test_epo)
             results = 'NOT CATCH'
-            for step in range(MAX_STEP):
+            for test_step in range(MAX_STEP):
                 action_pur = self.net_pur.get_action(state_temp, evalue=True)
                 action_eva = [np.array([0])]
                 next_state, _, _, done = self.game.step(action_pur, action_eva)
@@ -75,8 +76,9 @@ class Stage_One(object):
                 # self.game.plot('reward', False)
                 # self.game.plot('time', False)
                 # plt.show()
-            print('test episode %d pur %s'%(epo, results))
+            print('test episode %d pur %s'%(test_epo, results))
         print('win rates is %d'%win_times)
+    
     def save_model(self):
         self.net_pur.save_models()
 
