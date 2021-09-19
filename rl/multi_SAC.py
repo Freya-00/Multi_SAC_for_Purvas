@@ -40,7 +40,7 @@ class MULTI_SAC_NETWORKS(object):
         for i in range(self.num_net):
             if self.label == 'pur':
                 st = np.append(state[i*3:i*3+2],state[-3:-1])
-                print(st)
+                # print(st)
             action.append(self.nets[i].get_action(st, evalue = evalue))
         return action
     
