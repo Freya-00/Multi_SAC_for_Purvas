@@ -56,7 +56,7 @@ class PurEva_2D_Reward(object):
         re_evas= []
         pos_eva = pos_all[-1]
         dis_last = []
-        for i in range(4):
+        for i in range(self.num_pur):
             dis_last.append(distance[i][-1])
         dis_min = np.array(dis_last).min()
         for _ in range(1):

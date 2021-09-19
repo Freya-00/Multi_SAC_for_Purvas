@@ -21,7 +21,7 @@ import time
 """
 Definition of hyperparameters
 """
-NUM_PUR = 4
+NUM_PUR = 1
 NUM_EVA = 1
 EVA_MOVE = False
 CAPTURE_DISTANCE = 3 # Captured distance
@@ -36,7 +36,7 @@ class SWAMP_HUNT_GAME(object):
         self.pursuit = []
         self.evasion = []
         self.map = PurEvaMap()
-        self.reward = PurEva_2D_Reward(4, 1, self.map.length, self.map.width, self.map.obstacle, self.map.obs_radius)
+        self.reward = PurEva_2D_Reward(NUM_PUR, NUM_EVA, self.map.length, self.map.width, self.map.obstacle, self.map.obs_radius)
         self.game_time = []
         self.pur_success_time = []
         self.reward_record_all = []

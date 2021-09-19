@@ -26,7 +26,7 @@ class Stage_One(object):
     'pur catch not move target'
     def __init__(self):
         self.game = SWAMP_HUNT_GAME()
-        self.net_pur = MULTI_SAC_NETWORKS('pur', 4, 1, 4)
+        self.net_pur = MULTI_SAC_NETWORKS('pur', 1, 1, 4)
         self.game_results = []
 
     def load_models(self):
