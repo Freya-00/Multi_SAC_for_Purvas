@@ -71,7 +71,7 @@ class PurEva_2D_Reward(object):
         r = 0
         for i in range(len(self.obs_pos)):
             if self._cal_distance(self.obs_pos[i], pos) <= (self.obs_radius + MARGIN):
-                r = REWARD_COLLISION
+                r = REWARD_COLLISION* (1 - self._cal_distance(self.obs_pos[i], pos)/(self.obs_radius + MARGIN))
                 break
         if pos[0] >= (self.map_length-MARGIN) or pos[0] <= MARGIN or pos[1] <= MARGIN or pos[1] >= (self.map_width-MARGIN):
             r = REWARD_COLLISION
@@ -80,7 +80,7 @@ class PurEva_2D_Reward(object):
     def _cal_distance(self,a_pos,b_pos):
         'input [x,y]'
         return math.sqrt((a_pos[0]-b_pos[0])**2 + (a_pos[1]-b_pos[1])**2)
-    
+
 
 if __name__ == "__main__":
     pass
