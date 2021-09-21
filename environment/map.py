@@ -36,11 +36,11 @@ class PurEvaMap(object):
     
     def get_new_eva_pos(self):
         'get a new random pos for eva'
-        x = random.random()*60+50
-        y = random.random()*40+30
+        x = round(random.random()*60+30)
+        y = round(random.random()*40+30)
         while self._obs_detect([x,y]):
-            x = random.random()*60+50
-            y = random.random()*40+30
+            x = round(random.random()*60+30)
+            y = round(random.random()*40+30)
         return [x,y]
 
     def get_new_pur_pos(self):

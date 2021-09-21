@@ -7,7 +7,7 @@
 
 # Description: dynamic mode
 # Last Modified time: 2021-07-05 17:06:19 星期一
-DECISION_INTERVAL = 2
+DECISION_INTERVAL = 1
 VEL_DISCOUNT = 0.1
 from math import pi, sin, cos
 import math 
