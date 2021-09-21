@@ -22,6 +22,6 @@ import numpy as np
 if __name__ == "__main__":
     a = [1,2,3,45,67]
     b = np.array(a)
-    print(b[-3:-1])
+    print(b[-3:])
 
 

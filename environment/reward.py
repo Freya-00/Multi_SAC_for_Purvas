@@ -17,7 +17,7 @@ Definition of hyperparameters
 MARGIN = 3
 REWARD_COLLISION = -3
 SHAPING_GAMMA = 0.9
-
+WIN_REWARD = 5
 """
 Core Class of game
 """
@@ -48,7 +48,10 @@ class PurEva_2D_Reward(object):
         for i in range(self.num_pur):
             r_collision = self._punish_against_the_wall(pos_all[i])
             r_shaping = (distance[i][-2] - distance[i][-1])* SHAPING_GAMMA
-            r_done = 0
+            if game_done == True:
+                r_done = WIN_REWARD
+            else:
+                r_done = 0
             r.append(r_collision + r_shaping + r_done)
         return r
 

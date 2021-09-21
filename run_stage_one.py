@@ -19,14 +19,14 @@ import numpy as np
 EPOSIDE = 10000
 MAX_STEP = 80
 AC_DIM = 1
-STATE_DIM = 4
+STATE_DIM = 6
 
 ############## Main Class ############################
 class Stage_One(object):
     'pur catch not move target'
     def __init__(self):
         self.game = SWAMP_HUNT_GAME()
-        self.net_pur = MULTI_SAC_NETWORKS('pur', 1, 1, 4)
+        self.net_pur = MULTI_SAC_NETWORKS('pur', 1, AC_DIM, STATE_DIM)
         self.game_results = []
 
     def load_models(self):
@@ -87,4 +87,4 @@ if __name__ == "__main__":
     # a.load_models()
     a.run()
     # a.test_learn()
-    # a.save_model()
+    a.save_model()
