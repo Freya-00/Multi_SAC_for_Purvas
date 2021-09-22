@@ -18,6 +18,7 @@ MARGIN = 3
 REWARD_COLLISION = -3
 SHAPING_GAMMA = 0.9
 WIN_REWARD = 5
+ENDREWARD_MAGIN = 8
 """
 Core Class of game
 """
@@ -49,7 +50,10 @@ class PurEva_2D_Reward(object):
             r_collision = self._punish_against_the_wall(pos_all[i])
             r_shaping = (distance[i][-2] - distance[i][-1])* SHAPING_GAMMA
             if game_done == True:
-                r_done = WIN_REWARD
+                if distance[i][-1] <= ENDREWARD_MAGIN:
+                    r_done = WIN_REWARD
+                else:
+                    r_done = 0
             else:
                 r_done = 0
             r.append(r_collision + r_shaping + r_done)

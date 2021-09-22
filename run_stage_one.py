@@ -20,13 +20,13 @@ EPOSIDE = 10000
 MAX_STEP = 80
 AC_DIM = 1
 STATE_DIM = 6
-
+PUR_NUM = 4
 ############## Main Class ############################
 class Stage_One(object):
     'pur catch not move target'
     def __init__(self):
         self.game = SWAMP_HUNT_GAME()
-        self.net_pur = MULTI_SAC_NETWORKS('pur', 1, AC_DIM, STATE_DIM)
+        self.net_pur = MULTI_SAC_NETWORKS('pur', PUR_NUM, AC_DIM, STATE_DIM)
         self.game_results = []
 
     def load_models(self):
@@ -71,11 +71,11 @@ class Stage_One(object):
                     results = 'CATCH'
                     win_times += 1
                     break
-            # if epo % 10 ==0 and epo >0:
-                # self.game.plot('map', False)
+            if test_epo % 10 ==0 and test_epo >0:
+                self.game.plot('map', False)
                 # self.game.plot('reward', False)
                 # self.game.plot('time', False)
-                # plt.show()
+                plt.show()
             print('test episode %d pur %s'%(test_epo, results))
         print('win rates is %d'%win_times)
     

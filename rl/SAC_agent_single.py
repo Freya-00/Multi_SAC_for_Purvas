@@ -15,7 +15,7 @@ import time
 from rl.sac_adjust_alpha.replay_memory import ReplayMemory
 from rl.sac_adjust_alpha.sac import SAC
 
-REPLAY_BUFFER_SIZE = 1000000
+REPLAY_BUFFER_SIZE = 100000
 SEED = 123456
 
 

@@ -21,7 +21,7 @@ import time
 """
 Definition of hyperparameters
 """
-NUM_PUR = 1
+NUM_PUR = 4
 NUM_EVA = 1
 EVA_MOVE = False
 CAPTURE_DISTANCE = 3 # Captured distance
