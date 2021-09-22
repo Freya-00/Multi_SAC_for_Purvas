@@ -84,7 +84,8 @@ class Stage_One(object):
 
 if __name__ == "__main__":
     a = Stage_One()
-    # a.load_models()
     a.run()
-    # a.test_learn()
     a.save_model()
+
+    # a.load_models()
+    # a.test_learn()
