@@ -45,13 +45,13 @@ class Stage_One(object):
                 if done == True:
                     results = 'CATCH'
                     break
-            if epo %1000 == 0 and epo > 0:
+            if epo %2000 == 0 and epo > 0:
                 self.game.plot('map', True)
                 self.game.plot('reward', True)
                 self.game.plot('time', True)
                 # plt.show()
                 pass
-            if epo %1000 == 0 and epo >0:
+            if epo %2000 == 0 and epo >0:
                 self.save_model()
                 self.test_learn()
             print('episode %d pur %s'%(epo,results))
