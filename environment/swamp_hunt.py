@@ -32,7 +32,8 @@ INITIAL_POS_EVA = [[70,50]]
 Core Class of game
 """
 class SWAMP_HUNT_GAME(object):
-    def __init__(self):
+    def __init__(self, stage):
+        self.stage = stage
         self.pursuit = []
         self.evasion = []
         self.map = PurEvaMap()
@@ -48,7 +49,11 @@ class SWAMP_HUNT_GAME(object):
             self.reward_record_all.append([])
             self.reward_record_once.append(0)
         for j in range(NUM_EVA):
-            self.evasion.append(UAVPLANE(INITIAL_POS_EVA[j], 0))
+            if self.stage == 'two':
+                vel_eva = VEL
+            else:
+                vel_eva = 0
+            self.evasion.append(UAVPLANE(INITIAL_POS_EVA[j], vel_eva))
         _ = self._update_env_parametres()
         
 

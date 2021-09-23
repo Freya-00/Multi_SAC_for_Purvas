@@ -41,6 +41,8 @@ class MULTI_SAC_NETWORKS(object):
             if self.label == 'pur':
                 st = np.append(state[i*3:i*3+3],state[-3:])
                 # print(st)
+            if self.label == 'eva':
+                st = state
             action.append(self.nets[i].get_action(st, evalue = evalue))
         return action
     
@@ -50,6 +52,10 @@ class MULTI_SAC_NETWORKS(object):
             if self.label == 'pur':
                 state_single = np.append(state[i*3:i*3+3],state[-3:])
                 state_single_next = np.append(next_state[i*3:i*3+3],state[-3:])
+            
+            if self.label == 'eva':
+                state_single = state
+                state_single_next = next_state
             self.nets[i].memory.push(state_single, action[i], reward[i], state_single_next, done)
             self.nets[i].update_policy()
 
