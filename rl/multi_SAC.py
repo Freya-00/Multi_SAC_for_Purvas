@@ -8,7 +8,6 @@
 # Description: multi SAC
 import sys
 sys.path.append("../code")
-import time
 from rl.SAC_agent_single import PurEva_2D_Agent
 import numpy as np
 
@@ -24,7 +23,7 @@ class MULTI_SAC_NETWORKS(object):
                 flag_load_existing_model = False
                 ):
         self.label = label
-        self.num_net = num_networks
+        self.num_net = num_networks 
         self.nets = []
         for i in range(self.num_net):
             self.nets.append(
@@ -39,7 +38,8 @@ class MULTI_SAC_NETWORKS(object):
         action = []
         for i in range(self.num_net):
             if self.label == 'pur':
-                st = np.append(state[i*3:i*3+3],state[-3:])
+                # st = np.append(state[i*3:i*3+3],state[-3:])
+                st = state
                 # print(st)
             if self.label == 'eva':
                 st = state
@@ -49,13 +49,15 @@ class MULTI_SAC_NETWORKS(object):
     def update_policy(self, state, action, reward, next_state, done):
         '需要对数据进行处理'
         for i in range(self.num_net):
-            if self.label == 'pur':
-                state_single = np.append(state[i*3:i*3+3],state[-3:])
-                state_single_next = np.append(next_state[i*3:i*3+3],state[-3:])
+            # if self.label == 'pur':
+            #     state_single = np.append(state[i*3:i*3+3],state[-3:])
+            #     state_single_next = np.append(next_state[i*3:i*3+3],state[-3:])
             
-            if self.label == 'eva':
-                state_single = state
-                state_single_next = next_state
+            # if self.label == 'eva':
+            #     state_single = state
+            #     state_single_next = next_state
+            state_single = state
+            state_single_next = next_state
             self.nets[i].memory.push(state_single, action[i], reward[i], state_single_next, done)
             self.nets[i].update_policy()
 

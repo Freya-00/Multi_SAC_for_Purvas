@@ -19,7 +19,7 @@ import numpy as np
 EPOSIDE = 10000
 MAX_STEP = 80
 AC_DIM = 1
-STATE_DIM = 6
+STATE_DIM = 15
 PUR_NUM = 4
 ############## Main Class ############################
 class Stage_One(object):
@@ -84,8 +84,8 @@ class Stage_One(object):
 
 if __name__ == "__main__":
     a = Stage_One()
-    # a.run()
-    # a.save_model()
+    a.run()
+    a.save_model()
 
-    a.load_models()
-    a.test_learn()
+    # a.load_models()
+    # a.test_learn()

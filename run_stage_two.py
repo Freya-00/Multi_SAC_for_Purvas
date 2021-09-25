@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 EPOSIDE = 10000
 MAX_STEP = 80
 AC_DIM = 1
-STATE_DIM = 6
+STATE_DIM = 15
 PUR_NUM = 4
 
 ############## Main Class ############################
@@ -32,6 +32,7 @@ class Stage_Two(object):
     
     def load_models(self):
         self.net_pur.load_models()
+        self.net_eva.load_models()
     
     def run(self):
         for epo in range(EPOSIDE):
@@ -72,22 +73,25 @@ class Stage_Two(object):
                     results = 'CATCH'
                     win_times += 1
                     break
-            # if test_epo % 10 ==0 and test_epo >0:
-            #     self.game.plot('map', False)
-            #     # self.game.plot('reward', False)
-            #     # self.game.plot('time', False)
-            #     plt.show()
+            if test_epo % 10 ==0 and test_epo >0:
+                self.game.plot('map', False)
+                # self.game.plot('reward', False)
+                # self.game.plot('time', False)
+                plt.show()
             print('test episode %d pur %s'%(test_epo, results))
         print('win rates is %d'%win_times)
     
     def save_model(self):
         self.net_pur.save_models()
+        self.net_eva.save_models()
 
 
 
 if __name__ == "__main__":
     a = Stage_Two()
     a.load_models()
-    a.run()
-    # a.test_learn()
-    a.save_model()
+    # a.run()
+    # a.save_model()
+
+
+    a.test_learn()
