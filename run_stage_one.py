@@ -71,11 +71,11 @@ class Stage_One(object):
                     results = 'CATCH'
                     win_times += 1
                     break
-            if test_epo % 10 ==0 and test_epo >0:
-                self.game.plot('map', False)
-                # self.game.plot('reward', False)
-                # self.game.plot('time', False)
-                plt.show()
+            # if test_epo % 10 ==0 and test_epo >0:
+            #     self.game.plot('map', False)
+            #     # self.game.plot('reward', False)
+            #     # self.game.plot('time', False)
+            #     plt.show()
             print('test episode %d pur %s'%(test_epo, results))
         print('win rates is %d'%win_times)
     
