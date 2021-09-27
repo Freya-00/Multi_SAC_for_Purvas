@@ -13,7 +13,7 @@ sys.path.append("../code")
 from rl.multi_SAC import MULTI_SAC_NETWORKS
 from environment.swamp_hunt import SWAMP_HUNT_GAME
 import matplotlib.pyplot as plt
-
+from rl.multi_model_eva import MULTI_MODEL_EVA
 ############## Super Hyperparaters ####################
 EPOSIDE = 10000
 MAX_STEP = 80
@@ -27,12 +27,12 @@ class Stage_Two(object):
     def __init__(self):
         self.game = SWAMP_HUNT_GAME('two')
         self.net_pur = MULTI_SAC_NETWORKS('pur', PUR_NUM, AC_DIM, STATE_DIM)
-        self.net_eva = MULTI_SAC_NETWORKS('eva', 1, 1, 15, flag_policy_deterministic= True)
+        self.net_eva = MULTI_MODEL_EVA('eva', 1, 1, 15, flag_policy_deterministic= True)
         self.game_results = []
     
     def load_models(self):
         self.net_pur.load_models()
-        self.net_eva.load_models()
+        # self.net_eva.load_models()
     
     def run(self):
         for epo in range(EPOSIDE):
@@ -90,7 +90,7 @@ class Stage_Two(object):
 if __name__ == "__main__":
     a = Stage_Two()
     a.load_models()
-    # a.run()
+    a.run()
     # a.save_model()
 
 
