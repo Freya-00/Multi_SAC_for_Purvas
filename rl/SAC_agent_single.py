@@ -60,6 +60,10 @@ class PurEva_2D_Agent(object):
             _, _, _, _, _, = self.net.update_parameters(self.memory)
             # print('learn')
 
+    def update_policy_of_eva(self, memory):
+        if len(memory) > 1024:
+            _, _, _, _, _, = self.net.update_parameters(memory)
+
     def save_models(self):
         self.net.save_model('multi_pur_eva','%s_%s'%(self.label, time.strftime("%Y-%m-%d", time.localtime())))
 

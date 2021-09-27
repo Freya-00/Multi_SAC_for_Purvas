@@ -18,7 +18,7 @@ from rl.multi_model_eva import MULTI_MODEL_EVA
 EPOSIDE = 10000
 MAX_STEP = 80
 AC_DIM = 1
-STATE_DIM = 15
+STATE_DIM = 6
 PUR_NUM = 4
 
 ############## Main Class ############################
@@ -27,7 +27,7 @@ class Stage_Two(object):
     def __init__(self):
         self.game = SWAMP_HUNT_GAME('two')
         self.net_pur = MULTI_SAC_NETWORKS('pur', PUR_NUM, AC_DIM, STATE_DIM)
-        self.net_eva = MULTI_MODEL_EVA('eva', 1, 1, 15, flag_policy_deterministic= True)
+        self.net_eva = MULTI_MODEL_EVA('eva', 3, 1, 15, flag_policy_deterministic= True)
         self.game_results = []
     
     def load_models(self):
@@ -73,11 +73,11 @@ class Stage_Two(object):
                     results = 'CATCH'
                     win_times += 1
                     break
-            if test_epo % 10 ==0 and test_epo >0:
-                self.game.plot('map', False)
-                # self.game.plot('reward', False)
-                # self.game.plot('time', False)
-                plt.show()
+            # if test_epo % 10 ==0 and test_epo >0:
+            #     self.game.plot('map', False)
+            #     # self.game.plot('reward', False)
+            #     # self.game.plot('time', False)
+            #     plt.show()
             print('test episode %d pur %s'%(test_epo, results))
         print('win rates is %d'%win_times)
     
@@ -86,12 +86,11 @@ class Stage_Two(object):
         self.net_eva.save_models()
 
 
-
 if __name__ == "__main__":
     a = Stage_Two()
     a.load_models()
     a.run()
-    # a.save_model()
+    a.save_model()
 
 
-    a.test_learn()
+    # a.test_learn()

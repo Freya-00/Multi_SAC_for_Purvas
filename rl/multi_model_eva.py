@@ -11,6 +11,11 @@ sys.path.append("../code")
 from rl.SAC_agent_single import PurEva_2D_Agent
 import numpy as np
 import random
+from rl.sac_adjust_alpha.replay_memory import ReplayMemory
+
+REPLAY_BUFFER_SIZE = 100000
+SEED = 123456
+
 
 class MULTI_MODEL_EVA(object):
     def __init__(self,
@@ -34,6 +39,7 @@ class MULTI_MODEL_EVA(object):
                                 flag_automatic_entropy_tuning = True
                                 )
             )
+        self.memory = ReplayMemory(REPLAY_BUFFER_SIZE, SEED)
 
     def get_action(self, state, evalue = False):
         choosed = random.randrange(self.num_net)
@@ -41,11 +47,9 @@ class MULTI_MODEL_EVA(object):
     
     def update_policy(self, state, action, reward, next_state, done):
         '需要对数据进行处理'
+        self.memory.push(state, action[-1], reward[-1], next_state, done)
         for i in range(self.num_net):
-            state_single = state
-            state_single_next = next_state
-            self.nets[i].memory.push(state_single, action, reward, state_single_next, done)
-            self.nets[i].update_policy()
+            self.nets[i].update_policy_of_eva(self.memory)
 
     def save_models(self):
         for net in self.nets:
