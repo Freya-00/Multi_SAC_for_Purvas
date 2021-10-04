@@ -23,7 +23,7 @@ class SAC(object):
         self.tau = 0.005 # target smoothing coefficient(τ)
         self.alpha = 0.1 # Temperature parameter α determines the relative importance of the entropy term against the reward
         self.share_action = share_action # Share actions between agents
-        self.share_ac_num = 3 # the num of shared actions
+        self.share_ac_num = 9 # the num of shared actions
         self.policy_type = policy_type # Policy Type: Gaussian | Deterministic
         self.automatic_entropy_tuning = flag_automatic_entropy_tuning # Automaically adjust α
 

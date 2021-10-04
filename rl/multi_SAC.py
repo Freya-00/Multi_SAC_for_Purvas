@@ -18,18 +18,17 @@ class MULTI_SAC_NETWORKS(object):
                 dim_action,
                 dim_state,
                 flag_policy_deterministic = False,
-                flag_creat_network = True,
-                flag_share_action = False,
-                flag_load_existing_model = False
+                flag_critic_more_infor = False,
                 ):
         self.label = label
         self.num_net = num_networks 
         self.nets = []
+        self.critic_more_infor = flag_critic_more_infor
         for i in range(self.num_net):
             self.nets.append(
                 PurEva_2D_Agent('%s_%d'%(self.label,i), dim_state, dim_action,
                                 policy_deterministic= flag_policy_deterministic,
-                                share_action= False,
+                                share_action= flag_critic_more_infor,
                                 flag_automatic_entropy_tuning = True
                                 )
             )
@@ -37,8 +36,11 @@ class MULTI_SAC_NETWORKS(object):
     def get_action(self, state, evalue = False):
         action = []
         for i in range(self.num_net):
-            if self.label == 'pur':
-                st = np.append(state[i*3:i*3+3],state[-3:])
+            if self.critic_more_infor == True:
+                st = self.change_rank_for_critic(state, i)
+                st = st[0:6]
+            # if self.label == 'pur':
+            #     st = np.append(state[i*3:i*3+3],state[-3:])
                 # st = state
                 # print(st)
             if self.label == 'eva':
@@ -49,9 +51,12 @@ class MULTI_SAC_NETWORKS(object):
     def update_policy(self, state, action, reward, next_state, done):
         '需要对数据进行处理'
         for i in range(self.num_net):
-            if self.label == 'pur':
-                state_single = np.append(state[i*3:i*3+3],state[-3:])
-                state_single_next = np.append(next_state[i*3:i*3+3],state[-3:])
+            if self.critic_more_infor == True:
+                state_single = self.change_rank_for_critic(state, i)
+                state_single_next = self.change_rank_for_critic(next_state, i)
+            # if self.label == 'pur':
+            #     state_single = np.append(state[i*3:i*3+3],state[-3:])
+            #     state_single_next = np.append(next_state[i*3:i*3+3],state[-3:])
             
             # if self.label == 'eva':
             #     state_single = state
@@ -69,7 +74,15 @@ class MULTI_SAC_NETWORKS(object):
         for net in self.nets:
             net.load_models()
 
-
+    def change_rank_for_critic(self, state, num):
+        st = state.copy()
+        for j in range(3):
+            st[j] = state[num*3+j]
+            st[3+j] = state[12+j]
+            st[6+j] = state[3+j] if num == 0 else state[j]
+            st[9+j] = state[6+j] if num == 0 or num == 1 else state[3+j]
+            st[12+j] = state[9+j] if num != 3 else state[6+j]
+        return st
 
 if __name__ == "__main__":
     pass

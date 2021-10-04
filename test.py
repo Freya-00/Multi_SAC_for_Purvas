@@ -20,9 +20,15 @@ import numpy as np
 import random
 
 if __name__ == "__main__":
-    a = [1,2,3,45,67]
-    b = np.array(a)
-    for i in range(50):
-        print(random.randrange(3))
+    a = np.array([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15])
+    for i in range(4):
+        b = a.copy()
+        for j in range(3):
+            b[j] = a[i*3+j]
+            b[3+j] = a[12+j]
+            b[6+j] = a[3+j] if i == 0 else a[j]
+            b[9+j] = a[6+j] if i == 0 or i == 1 else a[3+j]
+            b[12+j] = a[9+j] if i != 3 else a[6+j]
+        print(b)
 
 

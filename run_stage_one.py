@@ -26,7 +26,7 @@ class Stage_One(object):
     'pur catch not move target'
     def __init__(self):
         self.game = SWAMP_HUNT_GAME('one')
-        self.net_pur = MULTI_SAC_NETWORKS('pur', PUR_NUM, AC_DIM, STATE_DIM)
+        self.net_pur = MULTI_SAC_NETWORKS('pur', PUR_NUM, AC_DIM, STATE_DIM, flag_critic_more_infor = True)
         self.game_results = []
 
     def load_models(self):
@@ -84,8 +84,8 @@ class Stage_One(object):
 
 if __name__ == "__main__":
     a = Stage_One()
-    # a.run()
-    # a.save_model()
+    a.run()
+    a.save_model()
 
-    a.load_models()
-    a.test_learn()
+    # a.load_models()
+    # a.test_learn()

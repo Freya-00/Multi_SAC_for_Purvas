@@ -32,7 +32,7 @@ class Stage_Two(object):
     
     def load_models(self):
         self.net_pur.load_models()
-        # self.net_eva.load_models()
+        self.net_eva.load_models()
     
     def run(self):
         for epo in range(EPOSIDE):
@@ -88,9 +88,9 @@ class Stage_Two(object):
 
 if __name__ == "__main__":
     a = Stage_Two()
+    # a.load_models()
+    # a.run()
+    # a.save_model()
+
     a.load_models()
-    a.run()
-    a.save_model()
-
-
-    # a.test_learn()
+    a.test_learn()
