@@ -14,7 +14,7 @@ import math
 import random
 
 ''' High Parameters'''
-OBS_DENSITY = 20
+OBS_DENSITY = 25
 OBS_RADIUS = 5
 MARGIN = 0.1
 
@@ -69,6 +69,17 @@ class PurEvaMap(object):
                 break
         return collision_flag
     
+    def get_mindis_obs(self, pos):
+        def _cal_distance(a_pos,b_pos):
+            return math.sqrt((a_pos[0]-b_pos[0])**2 + (a_pos[1]-b_pos[1])**2)
+        
+        dis_obs = []
+        for i in range(len(self.obstacle)):
+            dis_obs.append(_cal_distance(self.obstacle[i], pos))
+        
+        return min(dis_obs)
+
+
     def plot_map(self):
         map_board_x = np.arange(-1,self.length+1)
         map_board_y = np.arange(-1,self.width+1)

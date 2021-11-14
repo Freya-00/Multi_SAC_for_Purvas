@@ -46,7 +46,6 @@ class MULTI_MODEL_EVA(object):
         return [self.nets[choosed].get_action(state, evalue = evalue)]
     
     def update_policy(self, state, action, reward, next_state, done):
-        '需要对数据进行处理'
         self.memory.push(state, action[-1], reward[-1], next_state, done)
         for i in range(self.num_net):
             self.nets[i].update_policy_of_eva(self.memory)

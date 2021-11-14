@@ -15,18 +15,19 @@ from rl.multi_SAC import MULTI_SAC_NETWORKS
 from environment.swamp_hunt import SWAMP_HUNT_GAME
 import matplotlib.pyplot as plt
 import numpy as np
+import time
 ############## Super Hyperparaters ####################
 EPOSIDE = 10000
 MAX_STEP = 80
 AC_DIM = 1
-STATE_DIM = 15
+STATE_DIM = 8 # x, y, theta, px1, py1, tx, ty, d_obs
 PUR_NUM = 4
 ############## Main Class ############################
 class Stage_One(object):
     'pur catch not move target'
     def __init__(self):
         self.game = SWAMP_HUNT_GAME('one')
-        self.net_pur = MULTI_SAC_NETWORKS('pur', PUR_NUM, AC_DIM, STATE_DIM, flag_critic_more_infor = True)
+        self.net_pur = MULTI_SAC_NETWORKS('pur', PUR_NUM, AC_DIM, STATE_DIM, flag_critic_more_infor = False)
         self.game_results = []
 
     def load_models(self):
@@ -79,12 +80,19 @@ class Stage_One(object):
             print('test episode %d pur %s'%(test_epo, results))
         print('win rates is %d'%win_times)
     
+    def save_date(self):
+        np.savetxt("reward_%s.txt"%(time.strftime("%Y-%m-%d", time.localtime())),self.game.reward_record_all)
+        np.savetxt("time_%s.txt"%(time.strftime("%Y-%m-%d", time.localtime())),self.game.game_time)
+        np.savetxt("catch_%s.txt"%(time.strftime("%Y-%m-%d", time.localtime())),self.game.pur_success_time)
+
+
     def save_model(self):
         self.net_pur.save_models()
 
 if __name__ == "__main__":
     a = Stage_One()
     a.run()
+    a.save_date()
     a.save_model()
 
     # a.load_models()

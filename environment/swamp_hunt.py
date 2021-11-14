@@ -128,16 +128,29 @@ class SWAMP_HUNT_GAME(object):
         return pos_all
     
     def _get_state(self):
-        state = []
+        state = [] # 包含5个智能体 pur:x,y,theta, px1, py1, tx, ty, d_obs 
         for i in range(NUM_PUR):
-            state.append(self.pursuit[i].x[-1]/10)
-            state.append(self.pursuit[i].y[-1]/10)
-            state.append(self.pursuit[i].theta[-1])
+            state_single = []
+            state_single.append(self.pursuit[i].x[-1]/10)
+            state_single.append(self.pursuit[i].y[-1]/10)
+            state_single.append(self.pursuit[i].theta[-1])
+            neibor_s = i-1 if i !=1 else 3
+            state_single.append(self.pursuit[neibor_s].x[-1]/10)
+            state_single.append(self.pursuit[neibor_s].y[-1]/10)
+            state_single.append(self.evasion[0].x[-1]/10)
+            state_single.append(self.evasion[0].y[-1]/10)
+            state_single.append(self.map.get_mindis_obs([self.pursuit[i].x[-1], self.pursuit[i].y[-1]]))
+            state.append(np.array(state_single))
         
         for j in range(NUM_EVA):
-            state.append(self.evasion[j].x[-1]/10)
-            state.append(self.evasion[j].y[-1]/10)
-            state.append(self.evasion[j].theta[-1])
+            state_eva = []
+            state_eva.append(self.evasion[j].x[-1]/10)
+            state_eva.append(self.evasion[j].y[-1]/10)
+            state_eva.append(self.evasion[j].theta[-1])
+            for i in range(NUM_PUR):
+                state_eva.append(self.pursuit[i].x[-1]/10)
+                state_eva.append(self.pursuit[i].y[-1]/10)
+
         
         return np.array(state)
 
