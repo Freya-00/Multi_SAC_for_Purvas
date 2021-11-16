@@ -12,6 +12,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 import random
+import heapq
 
 ''' High Parameters'''
 OBS_DENSITY = 25
@@ -79,6 +80,16 @@ class PurEvaMap(object):
         
         return min(dis_obs)
 
+    def get_min_n_obs(self, pos, n = 2):
+        def _cal_distance(a_pos,b_pos):
+            return math.sqrt((a_pos[0]-b_pos[0])**2 + (a_pos[1]-b_pos[1])**2)
+        dis_obs = []
+        for i in range(len(self.obstacle)):
+            dis_obs.append(_cal_distance(self.obstacle[i], pos))
+        
+        min_num_index_list = map(dis_obs.index, heapq.nsmallest(n, dis_obs))
+        min_num_index_list = list(min_num_index_list)
+        return self.obstacle[min_num_index_list[0]], self.obstacle[min_num_index_list[1]]
 
     def plot_map(self):
         map_board_x = np.arange(-1,self.length+1)
@@ -98,8 +109,9 @@ class PurEvaMap(object):
 if __name__ == "__main__":
     x = random.random()*100
     y = random.random()*100
-    map = PurEvaMap()
-    print(map.map_detect([x,y]))
-    map.plot_map()
+    map1 = PurEvaMap()
+    print(map1.map_detect([x,y]))
+    map1.plot_map()
     plt.scatter(x,y)
+    print(map1.get_min_n_obs([x,y]))
     plt.show()
