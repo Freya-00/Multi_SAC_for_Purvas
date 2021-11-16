@@ -14,8 +14,10 @@ from rl.multi_SAC import MULTI_SAC_NETWORKS
 from environment.swamp_hunt import SWAMP_HUNT_GAME
 import matplotlib.pyplot as plt
 from rl.multi_model_eva import MULTI_MODEL_EVA
+import numpy as np
+import time
 ############## Super Hyperparaters ####################
-EPOSIDE = 10000
+EPOSIDE = 10001
 MAX_STEP = 80
 AC_DIM = 1
 STATE_DIM = 6
@@ -32,7 +34,7 @@ class Stage_Two(object):
     
     def load_models(self):
         self.net_pur.load_models()
-        self.net_eva.load_models()
+        # self.net_eva.load_models()
     
     def run(self):
         for epo in range(EPOSIDE):
@@ -85,12 +87,17 @@ class Stage_Two(object):
         self.net_pur.save_models()
         self.net_eva.save_models()
 
+    def save_date(self):
+        np.savetxt("reward_%s.txt"%(time.strftime("%Y-%m-%d", time.localtime())),self.game.reward_record_all)
+        np.savetxt("time_%s.txt"%(time.strftime("%Y-%m-%d", time.localtime())),self.game.game_time)
+        np.savetxt("catch_%s.txt"%(time.strftime("%Y-%m-%d", time.localtime())),self.game.pur_success_time)
 
 if __name__ == "__main__":
     a = Stage_Two()
-    # a.load_models()
-    # a.run()
-    # a.save_model()
-
     a.load_models()
-    a.test_learn()
+    a.run()
+    a.save_date()
+    a.save_model()
+
+    # a.load_models()
+    # a.test_learn()
