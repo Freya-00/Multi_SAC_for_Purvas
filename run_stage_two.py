@@ -20,7 +20,7 @@ import time
 EPOSIDE = 10001
 MAX_STEP = 80
 AC_DIM = 1
-STATE_DIM = 6
+STATE_DIM = 8
 PUR_NUM = 4
 
 ############## Main Class ############################
