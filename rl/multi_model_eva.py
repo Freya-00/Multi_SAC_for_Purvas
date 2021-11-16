@@ -43,10 +43,10 @@ class MULTI_MODEL_EVA(object):
 
     def get_action(self, state, evalue = False):
         choosed = random.randrange(self.num_net)
-        return [self.nets[choosed].get_action(state, evalue = evalue)]
+        return [self.nets[choosed].get_action(state[-1], evalue = evalue)]
     
     def update_policy(self, state, action, reward, next_state, done):
-        self.memory.push(state, action[-1], reward[-1], next_state, done)
+        self.memory.push(state[-1], action[-1], reward[-1], next_state[-1], done)
         for i in range(self.num_net):
             self.nets[i].update_policy_of_eva(self.memory)
 

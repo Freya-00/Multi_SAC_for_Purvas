@@ -150,7 +150,7 @@ class SWAMP_HUNT_GAME(object):
             for i in range(NUM_PUR):
                 state_eva.append(self.pursuit[i].x[-1]/10)
                 state_eva.append(self.pursuit[i].y[-1]/10)
-
+            state.append(np.array(state_eva))
         
         return np.array(state)
 
