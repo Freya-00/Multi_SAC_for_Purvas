@@ -18,10 +18,10 @@ from environment.pureva_2D import PurEva_2D_Game
 import matplotlib.pyplot as plt
 import numpy as np
 import random
-
+import math
 if __name__ == "__main__":
     a = np.array([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15])
 
-    print(a[:3])
+    print(math.atan2(5,-5))
 
 

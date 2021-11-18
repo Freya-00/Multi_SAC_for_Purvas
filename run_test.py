@@ -18,7 +18,7 @@ from rl.multi_model_eva import MULTI_MODEL_EVA
 import numpy as np
 from environment.eva_policy import EVA_POLICY
 ############## Super Hyperparaters ####################
-EPOSIDE = 10001
+
 MAX_STEP = 80
 AC_DIM = 1
 STATE_DIM = 8
@@ -45,9 +45,11 @@ class Game_Test(object):
             state_temp = self.game.initial_environment(epo)
             results = 'NOT CATCH'
             for step in range(MAX_STEP):
-                action_pur = self.net_pur.get_action(state_temp)
-                action_eva = self.net_eva.get_action(state_temp)
-                # action_eva = self.eva_policy.move_po(state_temp)
+                action_pur = self.net_pur.get_action(state_temp, evalue=True)
+                # action_pur = self.net_pur.get_action(state_temp)
+                # action_eva = self.net_eva.get_action(state_temp)
+                action_eva = self.eva_policy.move_po(state_temp)
+                # print(action_eva)
                 # action_eva = self.eva_policy.move_random()
                 next_state, rw_pur, rw_eva, done = self.game.step(action_pur, action_eva)
                 state_temp = next_state
@@ -55,6 +57,8 @@ class Game_Test(object):
                     results = 'CATCH'
                     win_times += 1
                     break
+            # self.game.plot('map', False)
+            # plt.show()
             print('test episode %d pur %s'%(epo, results))
         print('win rates is %d'%win_times)
            

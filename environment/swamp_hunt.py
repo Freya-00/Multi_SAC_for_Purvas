@@ -152,7 +152,7 @@ class SWAMP_HUNT_GAME(object):
                 state_eva.append(self.pursuit[i].y[-1]/10)
             state.append(np.array(state_eva))
         
-        return np.array(state)
+        return state
 
     def plot(self, date_type, save):
         """ date_type = 'map', 'reward','win rate','dis' """

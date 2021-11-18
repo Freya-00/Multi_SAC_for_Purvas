@@ -80,7 +80,7 @@ class PurEvaMap(object):
         
         return min(dis_obs)
 
-    def get_min_n_obs(self, pos, n = 2):
+    def get_min_n_obs(self, pos, n = 1):
         def _cal_distance(a_pos,b_pos):
             return math.sqrt((a_pos[0]-b_pos[0])**2 + (a_pos[1]-b_pos[1])**2)
         dis_obs = []
@@ -89,7 +89,7 @@ class PurEvaMap(object):
         
         min_num_index_list = map(dis_obs.index, heapq.nsmallest(n, dis_obs))
         min_num_index_list = list(min_num_index_list)
-        return self.obstacle[min_num_index_list[0]], self.obstacle[min_num_index_list[1]]
+        return self.obstacle[min_num_index_list[0]]
 
     def plot_map(self):
         map_board_x = np.arange(-1,self.length+1)

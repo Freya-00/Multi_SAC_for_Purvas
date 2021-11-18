@@ -29,7 +29,8 @@ class Stage_Two(object):
     def __init__(self):
         self.game = SWAMP_HUNT_GAME('two')
         self.net_pur = MULTI_SAC_NETWORKS('pur', PUR_NUM, AC_DIM, STATE_DIM)
-        self.net_eva = MULTI_MODEL_EVA('eva', 3, 1, 11, flag_policy_deterministic= True)
+        # self.net_eva = MULTI_MODEL_EVA('eva', 3, 1, 11, flag_policy_deterministic= True)
+        self.net_eva = MULTI_SAC_NETWORKS('eva', 1, 1, 11, flag_policy_deterministic= True)
         self.game_results = []
     
     def load_models(self):
@@ -94,7 +95,7 @@ class Stage_Two(object):
 
 if __name__ == "__main__":
     a = Stage_Two()
-    a.load_models()
+    # a.load_models()
     a.run()
     a.save_date()
     a.save_model()
