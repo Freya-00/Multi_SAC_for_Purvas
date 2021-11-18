@@ -21,7 +21,7 @@ import random
 import math
 if __name__ == "__main__":
     a = np.array([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15])
-
-    print(math.atan2(5,-5))
+    for i in range(200):
+        print(random.randrange(1))
 
 
