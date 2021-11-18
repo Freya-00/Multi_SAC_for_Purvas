@@ -6,26 +6,30 @@
 # Version: 1.0
 
 # Description: 
-
+import sys
+sys.path.append("../code")
 import math
 import random
 import numpy as np
+from environment.map import PurEvaMap
 
 OBS_POWER = 5
 TURNIN_ANGEL = 12
 
 class EVA_POLICY(object):
     def __init__(self, map):
-        self.map = map
+        self.map = PurEvaMap()
 
     def move_random(self):
         ac = 1 if random.random() > 0.5 else -1
         ac = random.random()* ac
         return [ac]
 
-    def move_po(self, pos_pur, pos_eva):
+    def move_po(self, state):
         'pos_pur: the position of pursuit'
         'pos_eva: pos and theta'
+        pos_pur = state[-1][-8:]
+        pos_eva = state[-1][:3]
         evade_vector = [0,0]
         min_obs_1, min_obs_2 = self.map.get_min_n_obs([pos_eva[0], pos_eva[1]])
         for i in range(len(pos_pur)):

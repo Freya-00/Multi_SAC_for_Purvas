@@ -49,7 +49,7 @@ class SWAMP_HUNT_GAME(object):
             self.reward_record_all.append([])
             self.reward_record_once.append(0)
         for j in range(NUM_EVA):
-            if self.stage == 'two':
+            if self.stage == 'two' or 'test':
                 vel_eva = VEL
             else:
                 vel_eva = 0
