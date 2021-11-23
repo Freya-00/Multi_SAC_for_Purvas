@@ -17,6 +17,8 @@ import matplotlib.pyplot as plt
 from rl.multi_model_eva import MULTI_MODEL_EVA
 import numpy as np
 from environment.eva_policy import EVA_POLICY
+import xlwt
+
 ############## Super Hyperparaters ####################
 
 MAX_STEP = 80
@@ -40,17 +42,16 @@ class Game_Test(object):
     
     def test_one(self):
         win_times = 0
-        self.load_models()
         for epo in range(100):
             state_temp = self.game.initial_environment(epo)
             results = 'NOT CATCH'
             for step in range(MAX_STEP):
-                action_pur = self.net_pur.get_action(state_temp, evalue=True)
-                # action_pur = self.net_pur.get_action(state_temp)
+                action_pur = self.net_pur.get_action(state_temp, evalue= False)
+                # action_pur = self.net_pur.get_action(state_temp, evalue= True)
+
                 # action_eva = self.net_eva.get_action(state_temp)
-                action_eva = self.eva_policy.move_po(state_temp)
-                # print(action_eva)
-                # action_eva = self.eva_policy.move_random()
+                # action_eva = self.eva_policy.move_po(state_temp)
+                action_eva = self.eva_policy.move_random()
                 next_state, rw_pur, rw_eva, done = self.game.step(action_pur, action_eva)
                 state_temp = next_state
                 if done == True:
@@ -59,9 +60,9 @@ class Game_Test(object):
                     break
             # self.game.plot('map', False)
             # plt.show()
-            print('test episode %d pur %s'%(epo, results))
+            # print('test episode %d pur %s'%(epo, results))
         print('win rates is %d'%win_times)
-           
+        return win_times
 
 
     def test_two(self):
@@ -70,9 +71,17 @@ class Game_Test(object):
     def test_three(self):
         pass
 
-    
+
+
 
 if __name__ == "__main__":
+    book = xlwt.Workbook() 
+    sheet = book.add_sheet(u'sheet1',cell_overwrite_ok=True)
+    sheet.write(0,0,'proposed') 
     a = Game_Test()
-    a.test_one()
+    a.load_models()
+    results = []
+    for i in range(50):
+        sheet.write(i+1,0,a.test_one())
+    book.save('Experiment_resluts.xls')
 

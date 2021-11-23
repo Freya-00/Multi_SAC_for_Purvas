@@ -23,6 +23,7 @@ class EVA_POLICY(object):
     def move_random(self):
         ac = 1 if random.random() > 0.5 else -1
         ac = random.random()* ac
+        ac = np.array([ac])
         return [ac]
 
     def move_po(self, state):
