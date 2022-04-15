@@ -37,15 +37,19 @@ class PurEvaMap(object):
     
     def get_new_eva_pos(self):
         'get a new random pos for eva'
-        x = random.random()*60+30
-        y = random.random()*40+30
+        x = random.random()*100+30
+        y = random.random()*50+30
+        # x = random.random()*60+30
+        # y = random.random()*40+30
         # x = round(random.random()*60+30)
         # y = round(random.random()*40+30)
         while self._obs_detect([x,y]):
             # x = round(random.random()*60+30)
             # y = round(random.random()*40+30)
-            x = random.random()*60+30
-            y = random.random()*40+30
+            # x = random.random()*60+30
+            # y = random.random()*40+30
+            x = random.random()*100+30
+            y = random.random()*50+30
         return [x,y]
 
     def get_new_pur_pos(self):
@@ -92,12 +96,12 @@ class PurEvaMap(object):
         return self.obstacle[min_num_index_list[0]]
 
     def plot_map(self):
-        map_board_x = np.arange(-1,self.length+1)
-        map_board_y = np.arange(-1,self.width+1)
-        plt.plot(map_board_x,0*map_board_x, color='black')
-        plt.plot(map_board_x,0*map_board_x + self.width,color='black')
-        plt.plot(0*map_board_y, map_board_y,color='black')
-        plt.plot(0*map_board_y + self.length,map_board_y,color='black')
+        map_board_x = np.arange(0,self.length)
+        map_board_y = np.arange(0,self.width)
+        plt.plot(map_board_x,0*map_board_x, ':', color='black')
+        plt.plot(map_board_x,0*map_board_x + self.width, ':', color='black')
+        plt.plot(0*map_board_y, map_board_y, ':', color='black')
+        plt.plot(0*map_board_y + self.length,map_board_y, ':', color='black')
         circle_theta = np.linspace(0, 2 * np.pi, 200)
         for i in range(len(self.obstacle)):
             circle_x = self.obs_radius*np.cos(circle_theta) + self.obstacle[i][0]
@@ -112,6 +116,6 @@ if __name__ == "__main__":
     map1 = PurEvaMap()
     print(map1.map_detect([x,y]))
     map1.plot_map()
-    plt.scatter(x,y)
+    # plt.scatter(x,y)
     print(map1.get_min_n_obs([x,y]))
     plt.show()

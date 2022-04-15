@@ -16,7 +16,7 @@ from environment.map import PurEvaMap
 OBS_POWER = 50
 TURNIN_ANGEL = 12
 
-class EVA_POLICY(object):
+class EVA_POLICY_L(object):
     def __init__(self):
         self.map = PurEvaMap()
 
@@ -35,17 +35,16 @@ class EVA_POLICY(object):
         pos_eva[0] *= 10
         pos_eva[1] *= 10
         evade_vector = [0,0]
-        min_obs_1 = self.map.get_min_n_obs([pos_eva[0], pos_eva[1]])
+        
         for i in range(4):
-            evade_vector[0] -= pos_pur[i*2+0]
-            evade_vector[1] -= pos_pur[i*2+1]
-        evade_vector[0] += pos_eva[0] * len(pos_pur)
-        evade_vector[1] += pos_eva[1] * len(pos_pur)
-        evade_vector_length = math.sqrt(evade_vector[0]**2 + evade_vector[1]**2)
-        evade_vector[0] /= evade_vector_length
-        evade_vector[1] /= evade_vector_length
+            _dis_pow = math.sqrt(
+                (pos_pur[i*2] - pos_eva[0])**2+(pos_pur[i*2+1] - pos_eva[1])**2
+            )
+            p_pow = [pos_eva[0] - pos_pur[i*2], pos_eva[1] - pos_pur[i*2+1]]
+            evade_vector[0] += p_pow[0]/_dis_pow**2
+            evade_vector[1] += p_pow[1]/_dis_pow**2
 
-
+        min_obs_1 = self.map.get_min_n_obs([pos_eva[0], pos_eva[1]])
         vector_1 = [pos_eva[0] - min_obs_1[0], pos_eva[1] - min_obs_1[1]]
         vector_1_length = math.sqrt(vector_1[0]**2 + vector_1[1]**2)
         if vector_1_length <= 12:

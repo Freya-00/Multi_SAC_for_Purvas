@@ -95,9 +95,9 @@ class Stage_Two(object):
 if __name__ == "__main__":
     a = Stage_Two()
     # a.load_models()
-    a.run()
-    a.save_date()
-    a.save_model()
+    # a.run()
+    # a.save_date()
+    # a.save_model()
 
-    # a.load_models()
-    # a.test_learn()
+    a.load_models()
+    a.test_learn()

@@ -7,17 +7,21 @@
 
 # Description: the game of swamp hunt
 
-from random import randrange
 import sys
+from random import random, randrange
 
 sys.path.append("../code")
 import math
+import time
+
+import matplotlib.image as mpimg
+import matplotlib.pyplot as plt
 import numpy as np
+
 from environment.dynamic_model.uavplane import UAVPLANE
 from environment.map import PurEvaMap
 from environment.reward import PurEva_2D_Reward
-import matplotlib.pyplot as plt
-import time
+
 """
 Definition of hyperparameters
 """
@@ -104,6 +108,7 @@ class SWAMP_HUNT_GAME(object):
     def _set_random_pos(self):
         for eva in self.evasion:
             eva.initial_pos = self.map.get_new_eva_pos()
+            eva.initial_theta = np.random.uniform(-1, 1, 1)[-1]*math.pi
         
         for pur in self.pursuit:
             pur.reset_theta(self.evasion[-1].initial_pos)
@@ -134,7 +139,7 @@ class SWAMP_HUNT_GAME(object):
             state_single.append(self.pursuit[i].x[-1]/10)
             state_single.append(self.pursuit[i].y[-1]/10)
             state_single.append(self.pursuit[i].theta[-1])
-            neibor_s = i-1 if i !=1 else 3
+            neibor_s = i-1 if i !=0 else 3
             state_single.append(self.pursuit[neibor_s].x[-1]/10)
             state_single.append(self.pursuit[neibor_s].y[-1]/10)
             state_single.append(self.evasion[0].x[-1]/10)
@@ -164,26 +169,35 @@ class SWAMP_HUNT_GAME(object):
         
         if date_type == 'map':
             plt.figure('map')
+            uav = mpimg.imread('./environment/uav.png')
+            fig_size = 3
             self.map.plot_map()
             circle_theta = np.linspace(0, 2 * np.pi, 200)
             color = ['b','g','r','y']
             for i in range(NUM_PUR):
-                plt.plot(self.pursuit[i].x, self.pursuit[i].y)
-                for j in range(len(self.pursuit[i].x)):
-                    if j % 10 == 0:
-                        plt.scatter(self.pursuit[i].x[j], self.pursuit[i].y[j],c = color[i], marker='x')
-                circle_x = CAPTURE_DISTANCE*np.cos(circle_theta) + self.pursuit[i].x[-1]
-                circle_y = CAPTURE_DISTANCE*np.sin(circle_theta) + self.pursuit[i].y[-1]
-                plt.plot(circle_x,circle_y,color="darkred", linewidth=2)
-                plt.text(self.pursuit[i].x[0], self.pursuit[i].y[0], 'pur%s'%i)
-            plt.plot(self.evasion[0].x, self.evasion[0].y)
-            plt.scatter(self.evasion[0].x[-1], self.evasion[0].y[-1], marker='o')
+                plt.plot(self.pursuit[i].x, self.pursuit[i].y, c = color[i], alpha = 0.5)
+                # plt.imshow(uav, extent=[self.pursuit[i].x[-1]- fig_size, 
+                #     self.pursuit[i].x[-1]+ fig_size, 
+                #     self.pursuit[i].y[-1]- fig_size, 
+                #     self.pursuit[i].y[-1]+ fig_size])
+                plt.scatter(self.pursuit[i].x[-1], self.pursuit[i].y[-1],c = color[i], marker='x')
+                # for j in range(len(self.pursuit[i].x)):
+                    # if j % 10 == 0:
+                        # plt.scatter(self.pursuit[i].x[j], self.pursuit[i].y[j],c = color[i], marker='x')
+                # circle_x = CAPTURE_DISTANCE*np.cos(circle_theta) + self.pursuit[i].x[-1]
+                # circle_y = CAPTURE_DISTANCE*np.sin(circle_theta) + self.pursuit[i].y[-1]
+                # plt.plot(circle_x,circle_y,color="darkred", linewidth=2)
+                plt.text(self.pursuit[i].x[-1], self.pursuit[i].y[-1], 'pur%s'%i)
+            plt.plot(self.evasion[0].x, self.evasion[0].y, alpha = 0.5)
+            plt.scatter(self.evasion[0].x[-1], self.evasion[0].y[-1], marker='o',color='red')
             plt.text(self.evasion[0].x[0], self.evasion[0].y[0], 'eva')
             plt.xlim(-10, 170)
             plt.ylim(-10, 110)
+            plt.axis("equal")
+            plt.axis('off')
             if save == True:
                 plt.savefig('./results/map_time_%s'%(time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime())))
-                plt.close('map')
+                # plt.close('map')
 
         if date_type == 'reward':
             plt.figure('purs reward')
